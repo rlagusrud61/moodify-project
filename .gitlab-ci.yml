@@ -9,7 +9,7 @@ pages: # the job must be named pages
     - mv public public-vue # GitLab Pages hooks on the public folder
     - cp -r dist/* ../public # copy all contents of dist folder to public folder in root
     # optionally, you can activate gzip support with the following line:
-    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+    - find ../public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
   artifacts:
     paths:
       - public # artifact path must be /public for GitLab Pages to pick it up
