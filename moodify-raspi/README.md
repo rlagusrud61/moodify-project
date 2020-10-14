@@ -1,13 +1,13 @@
 **0. Setup the environment**
 
 ```shell
-./setup.sh
+sudo ./setup.sh
 ```
 
-**1. Config the Bluetooth**
+**1.To run the bluetooth gatt server just run:**
 
 ```
-./config.sh
+sudo ./config.sh
 ```
 
 **Done...**
