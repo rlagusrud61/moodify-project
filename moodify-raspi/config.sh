@@ -7,9 +7,9 @@ sleep 0.2
 sudo hciconfig
 sudo hciconfig hci0 up
 
-sudo python3 moodify-gatt-server.py
+sudo bluetoothctl -- power on & sudo bluetoothctl -- advertise on & sudo bluetoothctl -- discoverable on &
 sleep 0.2
-sudo bluetoothctl -- advertise on
-sudo bluetoothctl -- discoverable on
+sudo python3 moodify-gatt-server
 sleep 0.2
+sudo bluetoothctl -- advertise off & sudo bluetoothctl -- discoverable off & sudo bluetoothctl -- power off &
 echo Completed...

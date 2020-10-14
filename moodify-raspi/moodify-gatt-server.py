@@ -274,12 +274,12 @@ class ChangeLightIntensityCharacteristic(Characteristic):
         print("moodify read: " + repr(self.value))
         res = None
         try:
-            res = 0  # TODO: read light intensity value.
+            res = "0"  # TODO: read light intensity value.
             self.value = res
         except Exception as e:
             print(f"Error getting status {e}")
 
-        return self.value
+        return bytearray(self.value, encoding='utf8')
 
     def WriteValue(self, value, options):
         print("moodify write: " + repr(value))
@@ -312,16 +312,16 @@ class ChangeAlarmSettingCharacteristic(Characteristic):
         print("moodify read: " + repr(self.value))
         res = None
         try:
-            res = 0  # TODO: read alarm value.
+            res = "0"  # TODO: read alarm value.
             self.value = res
         except Exception as e:
             print(f"Error getting status {e}")
 
-        return self.value
+        return bytearray(self.value, encoding='utf8')
 
     def WriteValue(self, value, options):
         print("moodify write: " + repr(value))
-        date_time_str = bytes(value).decode("utf-8")
+        date_time_str = bytes(value).decode("utf8")
 
         if datetime.datetime.now() < datetime.datetime.strptime(date_time_str, '%b %d %Y %I:%M%p'):
             # write it to machine
@@ -359,12 +359,12 @@ class ChangeColourCharacteristic(Characteristic):
         print("moodify read: " + repr(self.value))
         res = None
         try:
-            res = 0  # TODO: read value
-            self.value = bytearray(f"{res}", encoding="utf8")
+            res = "0"  # TODO: read value
+            self.value = res
         except Exception as e:
             print(f"Error getting status {e}")
 
-        return self.value
+        return bytearray(self.value, encoding='utf8')
 
     def WriteValue(self, value, options):
         print("moodify write: " + repr(value))
