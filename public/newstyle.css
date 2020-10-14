@@ -1,0 +1,252 @@
+html, body{
+  height: 100%; /*Needed to extend the background all the way down*/
+  background-color: #3E2C50;
+  text-align:center;
+  font-family:'Comfortaa';
+}
+
+#main{
+  transition: margin-left .5s; 
+}
+
+#nestedbar{
+  background-color:#674E7F;
+}
+
+.title{
+  font-family: 'Comfortaa';
+  font-size:50px;
+  color:white;
+}
+
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+
+  display: none;
+  overflow: hidden;
+}
+.circle.flex {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  height:500px;
+}
+
+.light{
+  z-index: 2;
+  height: 400px;
+  width: 400px;
+  background-color:white; /*dunno why but I need this*/
+  border-radius: 50%;
+  box-shadow: 0 0 15px 0 white;
+  display: inline-block;
+}
+
+.btn {
+  border:none;/* Remove borders */
+  color: white; /* Add a text color */
+  padding: 14px 28px; /* Add some padding */
+  cursor: pointer; /* Add a pointer cursor on mouse-over */
+}
+/*.container{
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  display: flex;
+}*/
+.btn_holder{
+  position:absolute;
+  left: 5%;
+  bottom: 5%;
+}
+.disconnect_btn {background-color: #674E7F;} /* Purple button */
+.disconnect_btn:hover {background-color: #C6AEDC;}
+
+#sidebar{
+  position:fixed;
+  background-color:#211B28;
+  border:0px;
+}
+
+.sidenav > a {
+  font-size:20px;
+  display:block; /*Each its own block/line */
+  margin-top:50px;
+  text-align:center;
+  padding:7px; /*Easier selecting of the modes*/
+  color:white;
+}
+
+
+.w3-bar-item, .w3-button{
+  font-size:20px;
+  text-align:center !important; /*The !important should be before the ";" */
+}
+
+.w3-bar-item, .w3-button a:hover{
+  background-color: #674E7F;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;            /* Footer height */
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #C6AEDC;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #C6AEDC;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.top-section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height:100vh;
+}
+
+.colourSquare {
+  margin: 25px 1px;
+  height: 50px;
+  width: 50px;
+  display:inline-block;
+}
+
+.whiteSquare{background-color:white;}
+.redSquare{background-color:red;}
+.blueSquare{background-color:blue;}
+.greenSquare{background-color:green;}
+
+#colours{
+  visibility: hidden;
+}
+
+.slidecontainer {
+  display:block;
+  margin-top:-65px; /*done via trial and error*/
+  color:white;
+  position: sticky; /*I need a higher z-index in order to make it appear. This requires a relative/absolute/sticky/... position. This one works*/
+  z-index: 10;
+  visibility: hidden;
+}
+
+
+
+
+
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modalContent {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
