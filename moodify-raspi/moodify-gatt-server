@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import datetime
+import os
 
 import dbus
 import dbus.exceptions
@@ -453,8 +454,13 @@ def main():
     service_manager.RegisterApplication(app.get_path(), {},
                                     reply_handler=register_app_cb,
                                     error_handler=register_app_error_cb)
-
-    mainloop.run()
+    
+    try:
+        mainloop.run()
+    except KeyboardInterrupt as e:
+        pass
+    finally:
+        os.system("sudo bluetoothctl -- advertise off & sudo bluetoothctl -- discoverable off & sudo bluetoothctl agent off & sudo bluetoothctl -- power off")
 
 if __name__ == '__main__':
     main()
