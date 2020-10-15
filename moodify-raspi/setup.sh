@@ -10,7 +10,7 @@ make -j4
 sudo make install
 cd ../
 rm -f ./bluez-5.50.tar.xz
-rm -f -d -r
+# rm -f -d -r ./bluez-5.50
 systemctl daemon-reload
 sudo service bluetooth restart
 systemctl daemon-reload
