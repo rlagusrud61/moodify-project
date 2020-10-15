@@ -6,7 +6,7 @@ sudo ./setup.sh
 
 **1.To run the bluetooth gatt server just run:**
 
-```
+```shell
 sudo ./config.sh
 ```
 
