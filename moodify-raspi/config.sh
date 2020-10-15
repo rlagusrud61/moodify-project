@@ -1,11 +1,15 @@
 #!/bin/bash
 echo Starting...
 sudo systemctl daemon-reload
+sleep 0.2
 sudo service bluetooth restart
+sleep 0.2
 sudo hciconfig
 sudo hciconfig hci0 up
 
-sudo bluetoothctl -- power on & sudo bluetoothctl -- agent on & sudo bluetoothctl -- discoverable on
-sleep 1.0
-sudo python3 moodify-gatt-advertisement & sudo python3 moodify-gatt-server
+sudo bluetoothctl -- power on & sudo bluetoothctl -- advertise on & sudo bluetoothctl -- discoverable on &
+sleep 0.2
+sudo python3 moodify-gatt-server.py
+sleep 0.2
+sudo bluetoothctl -- advertise off & sudo bluetoothctl -- discoverable off & sudo bluetoothctl -- power off &
 echo Completed...

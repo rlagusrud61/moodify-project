@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import datetime
-import os
 
 import dbus
 import dbus.exceptions
@@ -9,9 +8,9 @@ import dbus.service
 
 import array
 try:
-  from gi.repository import GObject
+    from gi.repository import GObject
 except ImportError:
-  import gobject as GObject
+    import gobject as GObject
 import sys
 
 from random import randint
@@ -93,13 +92,13 @@ class Service(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_SERVICE_IFACE: {
-                        'UUID': self.uuid,
-                        'Primary': self.primary,
-                        'Characteristics': dbus.Array(
-                                self.get_characteristic_paths(),
-                                signature='o')
-                }
+            GATT_SERVICE_IFACE: {
+                'UUID': self.uuid,
+                'Primary': self.primary,
+                'Characteristics': dbus.Array(
+                    self.get_characteristic_paths(),
+                    signature='o')
+            }
         }
 
     def get_path(self):
@@ -142,14 +141,14 @@ class Characteristic(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_CHRC_IFACE: {
-                        'Service': self.service.get_path(),
-                        'UUID': self.uuid,
-                        'Flags': self.flags,
-                        'Descriptors': dbus.Array(
-                                self.get_descriptor_paths(),
-                                signature='o')
-                }
+            GATT_CHRC_IFACE: {
+                'Service': self.service.get_path(),
+                'UUID': self.uuid,
+                'Flags': self.flags,
+                'Descriptors': dbus.Array(
+                    self.get_descriptor_paths(),
+                    signature='o')
+            }
         }
 
     def get_path(self):
@@ -177,8 +176,8 @@ class Characteristic(dbus.service.Object):
         return self.get_properties()[GATT_CHRC_IFACE]
 
     @dbus.service.method(GATT_CHRC_IFACE,
-                        in_signature='a{sv}',
-                        out_signature='ay')
+                         in_signature='a{sv}',
+                         out_signature='ay')
     def ReadValue(self, options):
         print('Default ReadValue called, returning error')
         raise NotSupportedException()
@@ -218,11 +217,11 @@ class Descriptor(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_DESC_IFACE: {
-                        'Characteristic': self.chrc.get_path(),
-                        'UUID': self.uuid,
-                        'Flags': self.flags,
-                }
+            GATT_DESC_IFACE: {
+                'Characteristic': self.chrc.get_path(),
+                'UUID': self.uuid,
+                'Flags': self.flags,
+            }
         }
 
     def get_path(self):
@@ -238,8 +237,8 @@ class Descriptor(dbus.service.Object):
         return self.get_properties()[GATT_DESC_IFACE]
 
     @dbus.service.method(GATT_DESC_IFACE,
-                        in_signature='a{sv}',
-                        out_signature='ay')
+                         in_signature='a{sv}',
+                         out_signature='ay')
     def ReadValue(self, options):
         print ('Default ReadValue called, returning error')
         raise NotSupportedException()
@@ -264,10 +263,10 @@ class ChangeLightIntensityCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.CLI_UUID,
-                ['read', 'write'],
-                service)
+            self, bus, index,
+            self.CLI_UUID,
+            ['read', 'write'],
+            service)
         self.notifying = False
         self.value = 0
 
@@ -304,10 +303,10 @@ class ChangeAlarmSettingCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.CASC_UUID,
-                ['read', 'write'],
-                service)
+            self, bus, index,
+            self.CASC_UUID,
+            ['read', 'write'],
+            service)
 
     def ReadValue(self, options):
         print("moodify read: " + repr(self.value))
@@ -350,10 +349,10 @@ class ChangeColourCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.CCC_UUID,
-                ['write', 'read'],
-                service)
+            self, bus, index,
+            self.CCC_UUID,
+            ['write', 'read'],
+            service)
         self.value = "Off"
 
     def ReadValue(self, options):
@@ -395,10 +394,10 @@ class CharacteristicUserDescriptionDescriptor(Descriptor):
         self.value = array.array('B', b'This is a characteristic for testing')
         self.value = self.value.tolist()
         Descriptor.__init__(
-                self, bus, index,
-                self.CUD_UUID,
-                ['read', 'write'],
-                characteristic)
+            self, bus, index,
+            self.CUD_UUID,
+            ['read', 'write'],
+            characteristic)
 
     def ReadValue(self, options):
         return self.value
@@ -442,8 +441,8 @@ def main():
         return
 
     service_manager = dbus.Interface(
-            bus.get_object(BLUEZ_SERVICE_NAME, adapter),
-            GATT_MANAGER_IFACE)
+        bus.get_object(BLUEZ_SERVICE_NAME, adapter),
+        GATT_MANAGER_IFACE)
 
     app = Application(bus)
 
@@ -452,15 +451,10 @@ def main():
     print('Registering GATT application...')
 
     service_manager.RegisterApplication(app.get_path(), {},
-                                    reply_handler=register_app_cb,
-                                    error_handler=register_app_error_cb)
-    
-    try:
-        mainloop.run()
-    except KeyboardInterrupt as e:
-        pass
-    finally:
-        os.system("sudo bluetoothctl -- advertise off & sudo bluetoothctl -- discoverable off & sudo bluetoothctl agent off & sudo bluetoothctl -- power off")
+                                        reply_handler=register_app_cb,
+                                        error_handler=register_app_error_cb)
+
+    mainloop.run()
 
 if __name__ == '__main__':
     main()

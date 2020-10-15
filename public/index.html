@@ -1,112 +1,120 @@
 <!DOCTYPE html>
 <html lang="en"> <!--The standard declaration <!doc...> already signifies we are using html5-->
-<head>
-    <meta charset="utf-8">
-    <title>Moodify&trade;</title>
-    <script type="text/javascript" src="Moodify.js"></script>
-    <link rel="stylesheet" href="style.css  ">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <title>Moodify&trade;</title>
+        <script type="text/javascript" src="Moodify.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+    </head>
 
-<body style="font-family: 'Comfortaa';color:white;">
+    <body style="font-family: 'Comfortaa';color:white;" onload="loadIn()">
 
-    <!-- Side Navigation bar -->
-    <div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
+        <!-- Side Navigation bar -->
+        <div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
 
-        <!-- Elements of Side Nav bar -->
-        <div class="container">
-            <h1 class="title">Moodify&trade;</h1>
-            <p>Welcome to the webinterface of <i>your</i> Moodify&trade;!</p>
-            <div>
-                <a onclick="openModes()" class="accordion w3-bar-item w3-button" style="text-align:center;">Modes</a>
-                <div class="panel">
-                   <div>
-                    <div>
-                        <input type="radio" id="contactChoice1"
-                        name="contact" value="email">
-                        <label for="contactChoice1">Manual / Light Mode</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="contactChoice2"
-                        name="contact" value="phone">
-                        <label for="contactChoice2">Mood Lighting Mode</label>
-                    </div>
-                    <div>
-                    <input type="radio" id="contactChoice3"
-                    name="contact" value="mail">
-                    <label for="contactChoice3">Music Mode</label>
-                </div>
-                </div>
+            <!-- Elements of Side Nav bar -->
+            <div class="container">
+                <h1 class="title">Moodify&trade;</h1>
+                <p>Welcome to the webinterface of <i>your</i> Moodify&trade;!</p>
                 
+                <div>
+                    <a onclick="openModes()" class="accordion w3-bar-item w3-button" style="text-align:center;">Modes</a>
+                    
+                    <div class="panel">
+                        <div>
+                            <input type="radio" id="contactChoice1" onclick="updateChoice()"
+                            name="contact" value="email">
+                            <label for="contactChoice1">Manual / Light Mode</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="contactChoice2" onclick="updateChoice()"
+                            name="contact" value="phone">
+                            <label for="contactChoice2">Mood Lighting Mode</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="contactChoice3" onclick="updateChoice()"
+                            name="contact" value="mail">
+                            <label for="contactChoice3">Music Mode</label>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#" class="w3-bar-item w3-button" style="text-align: center">Alarm</a>
             </div>
-            <a href="#" class="w3-bar-item w3-button" style="text-align: center">Alarm</a>
+
+            <div class="btn_holder">
+                <button onclick="modalPopUp()"  class="btn disconnect_btn" style="color:white">Disconnect</button>
+
+                <div id="disconModal" class="modal">
+                    <div class="modalContent">
+                        <span class="close" onclick="closing()">&times;</span>
+                        <p style="color:black;">You have been disconnected</p>
+                    </div>
+                </div>
+            </div>   
         </div>
 
-        <div class="btn_holder">
-            <button class="btn disconnect_btn" style="color:white">Disconnect</button>
+
+
+        <!-- Container for the light and toggle button and other features -->
+        <div id="main">
+            <!-- Glowing light -->
+            <div class="container top-section">
+            <!--This is the light on the standard page-->
+                <div class="circle flex">
+                    <span class="light"></span>
+                </div>
+
+            <!-- Toggle Switch  -->
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            
+            
+                <span class="custom-control custom-switch">
+                    <div id="colours">
+                        <div class="colourSquare whiteSquare"></div>
+                        <div class="colourSquare redSquare"></div>
+                        <div class="colourSquare blueSquare"></div>
+                        <div class="colourSquare greenSquare"></div>
+                    </div>
+
+                    <div id="slidr" class="slidecontainer">
+                        <input type="range" min="0" max="100" value="50" step="1" class="slider">
+                        <!-- This appears behind the slider  <label>Intensity</label> -->
+                    </div>
+                </span>
         </div>
-    </div>
-</div>
 
 
-<!-- Container for the light and toggle button and other features -->
-<div id="main">
-    <!-- Glowing light -->
-    <div class="container top-section">
-      <!--This is the light on the standard page-->
-      <div class="circle flex">
-        <span class="light"></span>
-    </div>
-
-    <!-- Toggle Switch  -->
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider round"></span>
-  </label>
-  <span class="custom-control custom-switch"></span>
-
-</div>
-</div>
-
-<footer id="footer">
-    Moodify&trade;, the future we all wish we were living.
-</footer>
+        <footer id="footer">
+            Moodify&trade;, the future we all wish we were living.
+        </footer>
+    </body>
 
 
-<script type="text/javascript">
+    <!--Somehow it doesn't work if I put this in the Moodify.js file-->
+    <script type="text/javascript">
+        var acc = document.getElementsByClassName("accordion");
+        var i;
 
-/* 
-    var flag = true;
-    function openModes() {
-        let nestedbar = document.getElementById("nestedbar");
-        nestedbar.style.width= flag ? "40%" : "";
-        let main = document.getElementById("main");
-        main.style.marginLeft= flag ? "40%" : "";
-        flag = !flag;
-    }
-*/
+        for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
 
-    var acc = document.getElementsByClassName("accordion");
-    var i;
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                    } else {panel.style.display = "block";}
+                }
+            );
+        }
 
-    for (i = 0; i < acc.length; i++) {
-      acc[i].addEventListener("click", function() {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
-    this.classList.toggle("active");
-
-    /* Toggle between hiding and showing the active panel */
-    var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
-  } else {
-      panel.style.display = "block";
-  }
-});
-  }
-
-</script>
-
-</body>
+    </script>
 </html>
