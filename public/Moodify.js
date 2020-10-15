@@ -36,6 +36,7 @@ window.onclick = function(event) {
   }
 } 
 
+// Debugger function for Master Puru <3
 function debug() {
   let toggle = document.getElementById("toggle_btn");
 
@@ -46,4 +47,6 @@ function debug() {
   }
 }
 
-
+function disconnect(){
+  alert("You are now disconnected. Bai!");
+}
