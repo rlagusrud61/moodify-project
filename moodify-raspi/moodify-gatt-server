@@ -29,7 +29,7 @@ class ManualLightMode(Service):
 
 
 class ToggleModeCharacteristic(Characteristic):
-    TOGGLE_MODE_CHARACTERISTIC_UUID = "953f08c4-8c8f-46f4-a48b-07c18dfb3447"
+    TOGGLE_MODE_CHARACTERISTIC_UUID = "58590b45-241a-4230-b020-700ac827a8fb"
 
     def __init__(self, service):
         self.notifying = True

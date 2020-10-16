@@ -63,10 +63,10 @@ class LEDControl:
         if self.autoLDR and not self.manualLED:
             value = self.rc_time()
             print(f"Ldr Value: {value}")
-            if value >= 1000:
+            if value >= 10000:
                 print("Lights are ON")
                 GPIO.output(self.led, True)
-            if value < 1000:
+            if value < 10000:
                 print("Lights are OFF")
                 GPIO.output(self.led, False)
 
@@ -100,6 +100,9 @@ class LEDControl:
                     elif self.autoLDR:
                         print("Auto LDR")
                         self.autoLDRFun()
+                    elif not (self.manualLED or self.LEDStatus or self.autoLDR):
+                        self.manualLED(self.LEDStatus)
+                        print("Manual LED- OFF")
                     else:
                         pass
         except KeyboardInterrupt:
