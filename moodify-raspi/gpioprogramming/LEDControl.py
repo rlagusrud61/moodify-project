@@ -74,8 +74,7 @@ class LEDControl:
         # print("Before Lock: manualLEDFun")
         # with self._lock:
         #     print("After Lock: manualLEDFun")
-        if self.manualLED:
-            GPIO.output(self.led, newStatus)
+        GPIO.output(self.led, newStatus)
 
     def update(self, code):
         print("Before Lock: update")
@@ -101,7 +100,7 @@ class LEDControl:
                         print("Auto LDR")
                         self.autoLDRFun()
                     elif not (self.manualLED or self.LEDStatus or self.autoLDR):
-                        self.manualLED(self.LEDStatus)
+                        self.manualLEDFun(self.LEDStatus)
                         print("Manual LED- OFF")
                     else:
                         pass
