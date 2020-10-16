@@ -1,7 +1,8 @@
 var colours;
 var slidr;
 var opt1;
-var opt2
+var opt2;
+let disconModal = document.getElementById("disconModal");
 
 function loadIn(){
     colours = document.getElementById("colours");
@@ -24,13 +25,28 @@ function updateChoice(){
 
 var span = document.getElementsByClassName("close")[0];
 
-function modalPopUp() {document.getElementById("disconModal").style.display = "block";}
+function modalPopUp() {disconModal.style.display = "block";}
 
-function closing(){document.getElementById("disconModal").style.display = "none";}
+function closing(){disconModal.style.display = "none";}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
+  if (event.target == disconModal) {
     modal.style.display = "none";
   }
 } 
+
+// Debugger function for Master Puru <3
+function debug() {
+  let toggle = document.getElementById("toggle_btn");
+
+  if (toggle.checked == true) {
+    console.log("Baaaaby I'm ON!");
+  } else {
+    console.log("I'm off. Bai");
+  }
+}
+
+function disconnect(){
+  alert("You are now disconnected. Bai!");
+}

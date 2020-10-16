@@ -18,9 +18,9 @@ html, body{
     font-size:50px;
     color:white;
   }
-  
+/* Basically does nothing for some reason, gonna look into it.  
   .accordion {
-    background-color: #eee;
+    background-color: #674E7F;
     color: #444;
     cursor: pointer;
     padding: 18px;
@@ -30,10 +30,10 @@ html, body{
     outline: none;
     transition: 0.4s;
   }
-  
+   */
   /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
   .active, .accordion:hover {
-    background-color: #ccc;
+    background-color: #674E7F;
   }
   
   /* Style the accordion panel. Note: hidden by default */
@@ -140,7 +140,11 @@ html, body{
     transition: .4s;
   }
   
-  .slider:before {
+  .slider:before{
+    position: absolute;
+  }
+
+  .slider.round:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -152,15 +156,15 @@ html, body{
     transition: .4s;
   }
   
-  input:checked + .slider {
+  input:checked + .slider.round {
     background-color: #C6AEDC;
   }
   
-  input:focus + .slider {
+  input:focus + .slider.round {
     box-shadow: 0 0 1px #C6AEDC;
   }
   
-  input:checked + .slider:before {
+  input:checked + .slider.round:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -210,10 +214,6 @@ html, body{
   
   
   
-  
-  
-  
-  
   .modal {
     display: none; /* Hidden by default */
     position:fixed; /* Stay in place */
@@ -251,3 +251,40 @@ html, body{
     cursor: pointer;
   }
   
+/* CSS for Range Slider */
+
+  .slidecontainer {
+    width: 100%; /* Width of the outside container */
+  }
+  
+  .slider.range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;  
+    background: white;
+    outline: none;
+    opacity: 1.0;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider.range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #d385d1;
+    cursor: pointer;
+  }
+  
+  .slider.range::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #d385d1;
+    cursor: pointer;
+  }
+
+  /* End of CSS for range slider */

@@ -45,7 +45,8 @@
             </div>
 
             <div class="btn_holder">
-                <button onclick="modalPopUp()"  class="btn disconnect_btn" style="color:white">Disconnect</button>
+                <!-- For now onclick of Disconnect calls disconnect function in Moodify.js (alert box) -->
+                <button onclick="disconnect();"  class="btn disconnect_btn" style="color:white">Disconnect</button>
 
                 <div id="disconModal" class="modal">
                     <div class="modalContent">
@@ -69,11 +70,11 @@
 
             <!-- Toggle Switch  -->
             <label class="switch">
-                <input type="checkbox">
+                <input type="checkbox" id="toggle_btn" onclick="debug();">
                 <span class="slider round"></span>
             </label>
             
-            
+            <!-- Color palette -->
                 <span class="custom-control custom-switch">
                     <div id="colours">
                         <div class="colourSquare whiteSquare"></div>
@@ -82,8 +83,10 @@
                         <div class="colourSquare greenSquare"></div>
                     </div>
 
+                    <!-- Slider for Intensity -->
                     <div id="slidr" class="slidecontainer">
-                        <input type="range" min="0" max="100" value="50" step="1" class="slider">
+                        <input id="range_slider" type="range" min="0" max="100" value="50" step="1" class="slider range">
+                        <div id="demo"></div>
                         <!-- This appears behind the slider  <label>Intensity</label> -->
                     </div>
                 </span>
@@ -99,9 +102,8 @@
     <!--Somehow it doesn't work if I put this in the Moodify.js file-->
     <script type="text/javascript">
         var acc = document.getElementsByClassName("accordion");
-        var i;
 
-        for (i = 0; i < acc.length; i++) {
+        for (let i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function() {
                 /* Toggle between adding and removing the "active" class,
                 to highlight the button that controls the panel */
