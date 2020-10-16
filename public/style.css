@@ -2,23 +2,23 @@ html, body{
     height: 100%; /*Needed to extend the background all the way down*/
     background-color: #3E2C50;
     text-align:center;
-    font-family:'Comfortaa';
-  }
-  
-  #main{
-    transition: margin-left .5s; 
-  }
-  
-  #nestedbar{
+    font-family: 'Comfortaa', sans-serif;
+}
+
+#main{
+    transition: margin-left .5s;
+}
+
+#nestedbar{
     background-color:#674E7F;
-  }
-  
-  .title{
-    font-family: 'Comfortaa';
+}
+
+.title{
+    font-family: 'Comfortaa', sans-serif;
     font-size:50px;
     color:white;
-  }
-/* Basically does nothing for some reason, gonna look into it.  
+}
+/* Basically does nothing for some reason, gonna look into it.
   .accordion {
     background-color: #674E7F;
     color: #444;
@@ -31,26 +31,26 @@ html, body{
     transition: 0.4s;
   }
    */
-  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-  .active, .accordion:hover {
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
     background-color: #674E7F;
-  }
-  
-  /* Style the accordion panel. Note: hidden by default */
-  .panel {
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
     padding: 0 18px;
-  
+
     display: none;
     overflow: hidden;
-  }
-  .circle.flex {
+}
+.circle.flex {
     display: flex;
     justify-content: center;
     align-items:center;
     height:500px;
-  }
-  
-  .light{
+}
+
+.light{
     z-index: 2;
     height: 400px;
     width: 400px;
@@ -58,77 +58,77 @@ html, body{
     border-radius: 50%;
     box-shadow: 0 0 15px 0 white;
     display: inline-block;
-  }
-  
-  .btn {
+}
+
+.btn {
     border:none;/* Remove borders */
     color: white; /* Add a text color */
     padding: 14px 28px; /* Add some padding */
     cursor: pointer; /* Add a pointer cursor on mouse-over */
-  }
-  /*.container{
-    justify-content: space-between;
-    flex-direction: column;
-    height: 100vh;
-    display: flex;
-  }*/
-  .btn_holder{
+}
+/*.container{
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  display: flex;
+}*/
+.btn_holder{
     position:absolute;
     left: 5%;
     bottom: 5%;
-  }
-  .disconnect_btn {background-color: #674E7F;} /* Purple button */
-  .disconnect_btn:hover {background-color: #C6AEDC;}
-  
-  #sidebar{
+}
+.disconnect_btn {background-color: #674E7F;} /* Purple button */
+.disconnect_btn:hover {background-color: #C6AEDC;}
+
+#sidebar{
     position:fixed;
     background-color:#211B28;
     border:0px;
-  }
-  
-  .sidenav > a {
+}
+
+.sidenav > a {
     font-size:20px;
     display:block; /*Each its own block/line */
     margin-top:50px;
     text-align:center;
     padding:7px; /*Easier selecting of the modes*/
     color:white;
-  }
-  
-  
-  .w3-bar-item, .w3-button{
+}
+
+
+.w3-bar-item, .w3-button{
     font-size:20px;
     text-align:center !important; /*The !important should be before the ";" */
-  }
-  
-  .w3-bar-item, .w3-button a:hover{
+}
+
+.w3-bar-item, .w3-button a:hover{
     background-color: #674E7F;
-  }
-  
-  #footer {
+}
+
+#footer {
     position: fixed;
     bottom: 0;
     width: 100%;
     height: 2.5rem;            /* Footer height */
-  }
-  
-  /* The switch - the box around the slider */
-  .switch {
+}
+
+/* The switch - the box around the slider */
+.switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+}
+
+/* Hide default HTML checkbox */
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+}
+
+/* The slider */
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -138,13 +138,13 @@ html, body{
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before{
-    position: absolute;
-  }
+}
 
-  .slider.round:before {
+.slider:before{
+    position: absolute;
+}
+
+.slider.round:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -154,67 +154,67 @@ html, body{
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider.round {
+}
+
+input:checked + .slider.round {
     background-color: #C6AEDC;
-  }
-  
-  input:focus + .slider.round {
+}
+
+input:focus + .slider.round {
     box-shadow: 0 0 1px #C6AEDC;
-  }
-  
-  input:checked + .slider.round:before {
+}
+
+input:checked + .slider.round:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+/* Rounded sliders */
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
-  
-  .top-section {
+}
+
+.top-section {
     align-items: center;
     display: flex;
     justify-content: center;
     flex-direction: column;
     height:100vh;
-  }
-  
-  .colourSquare {
+}
+
+.colourSquare {
     margin: 25px 1px;
     height: 50px;
     width: 50px;
     display:inline-block;
-  }
-  
-  .whiteSquare{background-color:white;}
-  .redSquare{background-color:red;}
-  .blueSquare{background-color:blue;}
-  .greenSquare{background-color:green;}
-  
-  #colours{
+}
+
+.whiteSquare{background-color:white;}
+.redSquare{background-color:red;}
+.blueSquare{background-color:blue;}
+.greenSquare{background-color:green;}
+
+#colours{
     visibility: hidden;
-  }
-  
-  .slidecontainer {
+}
+
+.slidecontainer {
     display:block;
     margin-top:-65px; /*done via trial and error*/
     color:white;
     position: sticky; /*I need a higher z-index in order to make it appear. This requires a relative/absolute/sticky/... position. This one works*/
     z-index: 10;
     visibility: hidden;
-  }
-  
-  
-  
-  .modal {
+}
+
+
+
+.modal {
     display: none; /* Hidden by default */
     position:fixed; /* Stay in place */
     z-index: 5; /* Sit on top */
@@ -225,66 +225,66 @@ html, body{
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content/Box */
-  .modalContent {
+}
+
+/* Modal Content/Box */
+.modalContent {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
+}
+
+/* The Close Button */
+.close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
+}
+
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
-  
+}
+
 /* CSS for Range Slider */
 
-  .slidecontainer {
+.slidecontainer {
     width: 100%; /* Width of the outside container */
-  }
-  
-  .slider.range {
+}
+
+.slider.range {
     -webkit-appearance: none;
     width: 100%;
     height: 10px;
-    border-radius: 5px;  
+    border-radius: 5px;
     background: white;
     outline: none;
     opacity: 1.0;
     -webkit-transition: .2s;
     transition: opacity .2s;
-  }
-  
-  .slider.range::-webkit-slider-thumb {
+}
+
+.slider.range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%; 
-    background: #d385d1;
-    cursor: pointer;
-  }
-  
-  .slider.range::-moz-range-thumb {
     width: 25px;
     height: 25px;
     border-radius: 50%;
     background: #d385d1;
     cursor: pointer;
-  }
+}
 
-  /* End of CSS for range slider */
+.slider.range::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #d385d1;
+    cursor: pointer;
+}
+
+/* End of CSS for range slider */
