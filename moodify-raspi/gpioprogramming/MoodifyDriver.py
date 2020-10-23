@@ -16,12 +16,12 @@ def decodeString(code):
     return manualLED, autoLDR, musicMode
 
 
-def decodeColour(colour: str):
+def decodeColour(colour):
     print(f"Colour: {colour}")
     return tuple(int(val) for val in colour.split(sep=SEP))
 
 
-def decodeBrightness(brightness: str):
+def decodeBrightness(brightness):
     print(f"Brightness: {brightness}")
     return float(brightness)
 
@@ -71,7 +71,7 @@ class MoodifyLogic:
 
         return count
 
-    def __manualLEDFun(self, selected: bool):
+    def __manualLEDFun(self, selected):
         if selected:
             self.colourControl.show_colours()
         else:
@@ -87,13 +87,13 @@ class MoodifyLogic:
             print("Lights are OFF")
             self.colourControl.turn_off()
 
-    def __musicModeFun(self, selected: bool):
+    def __musicModeFun(self, selected):
         if selected:
             self.colourControl.turnOnMusic()
         else:
             self.colourControl.turnOffMusic()
 
-    def update_mode(self, code: str):
+    def update_mode(self, code):
         with self._lock:
             manualLED, autoLDR, musicMode = decodeString(code)
             self.manualLED = manualLED
@@ -101,12 +101,12 @@ class MoodifyLogic:
             self.musicMode = musicMode
             print("Values Updated")
 
-    def update_colour(self, colour: str):
+    def update_colour(self, colour):
         with self._lock:
             colourInTuple = decodeColour(colour)
             self.colourControl.setColour(colourInTuple)
 
-    def update_brightness(self, brightness: str):
+    def update_brightness(self, brightness):
         with self._lock:
             newBrightness = decodeBrightness(brightness)
             self.colourControl.setBrightness(newBrightness)
@@ -118,6 +118,10 @@ class MoodifyLogic:
                 time.sleep(5*self.delayTime)
                 with self._lock:
                     print(self.manualLED, self.musicMode, self.musicMode)
+
+                    if (self.__e.isSet() and not self.musicMode):
+                        self.__e.clear()
+                    
                     if self.manualLED:
                         print("Manual LED")
                         self.__manualLEDFun(self.manualLED)

@@ -13,8 +13,6 @@ def brightnessAdjustedColour(colour, brightness):
 
 
 class StripControl:
-    colour: tuple[int, int, int]
-    brightness: float
 
     def __init__(self, e):
         self.colour = OFF
@@ -32,7 +30,6 @@ class StripControl:
             pixel_order=self.__ORDER
         )
 
-        self.__lock = threading.Lock()
         self.__e = e
 
         self.__refresh_rgb_strip()
@@ -42,39 +39,40 @@ class StripControl:
         self.turn_off()
 
     def show_colours(self):
-        with self.__lock:
-            self.__pixels.show()
-            time.sleep(self.__delay)
+        self.__pixels.show()
+        time.sleep(self.__delay)
 
     def turn_off(self):
-        with self.__lock:
-            self.__pixels.fill(OFF)
-            self.show_colours()
+        self.__pixels.fill(OFF)
+        self.show_colours()
 
-    def setColour(self, newColour: tuple[int, int, int]):
-        with self.__lock:
-            self.colour = newColour
-            self.__refresh_rgb_strip()
+    def setColour(self, newColour):
+        self.colour = newColour
+        print(f"New Colour: {self.colour}")
+        self.__refresh_rgb_strip()
 
-    def setBrightness(self, newBrightness: float):
-        with self.__lock:
-            self.brightness = newBrightness
-            self.__refresh_rgb_strip()
+    def setBrightness(self, newBrightness):
+        self.brightness = newBrightness
+        print(f"New Brightness: {self.brightness}")
+        self.__refresh_rgb_strip()
 
     def __refresh_rgb_strip(self):
         self.__brightness_adjusted_colour = brightnessAdjustedColour(self.colour, self.brightness)
+        print(f"New Adjusted Colour: {self.__brightness_adjusted_colour}")
         self.__pixels.fill(self.__brightness_adjusted_colour)
 
     def __start(self):
-        print("Starting Thread")
+        print("Starting Thread for Music Loop")
         threading.Thread(target=self.__musicLoop, daemon=True).start()
 
     def turnOnMusic(self):
         if not self.__e.isSet():
+            print("Turning on Music")
             self.__e.set()
 
     def turnOffMusic(self):
         if self.__e.isSet():
+            print("Turning off the music")
             self.__e.clear()
 
     def __musicLoop(self):
@@ -83,4 +81,6 @@ class StripControl:
             # TODO: do the boogy
             # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
             # Use brightnessAdjustedColour for proper values if needed.
+            print("Playing music on the lights")
+            time.sleep(1)
             pass

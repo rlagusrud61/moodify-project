@@ -83,7 +83,7 @@ class ColourCharacteristic(Characteristic):
 
     def __init__(self, service):
         self.notifying = False
-        self._value = ""
+        self._value = "0,0,0"
 
         Characteristic.__init__(
             self, self.COLOUR_CHARACTERISTIC_UUID,
@@ -131,7 +131,7 @@ class BrightnessCharacteristic(Characteristic):
 
     def __init__(self, service):
         self.notifying = False
-        self._value = ""
+        self._value = "1"
 
         Characteristic.__init__(
             self, self.BRIGHTNESS_CHARACTERISTIC_UUID,
@@ -215,7 +215,7 @@ class ColourCharacteristicDescriptor(Descriptor):
 
 
 class BrightnessCharacteristicDescriptor(Descriptor):
-    BRIGHTNESS_CHAR_UUID = "d7663fe0-1b13-4f3a-bdb4-cad3776c1624"
+    BRIGHTNESS_CHAR_UUID = "ab8ffd08-70a0-4128-9d59-465b9159c33f"
     BRIGHTNESS_DESCRIPTOR_VALUE = "This is used to set the brightness in manual light/auto LDR mode"
 
     def __init__(self, characteristic):

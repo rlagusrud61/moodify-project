@@ -15,7 +15,7 @@ cd ../
 rm -f ./bluez-5.54.tar.xz
 rm -f -d -r bluez-5.54
 
-sudo pip3 install dbus-python gobject -y
+sudo pip3 install dbus-python gobject
 sudo systemctl daemon-reload
 sudo service bluetooth restart
 
