@@ -198,8 +198,13 @@ input:checked + .slider.round:before {
 .redSquare{background-color:red;}
 .blueSquare{background-color:blue;}
 .greenSquare{background-color:green;}
+.blackSquare{background-color:black;}
 
 #colours{
+    visibility: hidden;
+}
+
+#musicToggle{
     visibility: hidden;
 }
 

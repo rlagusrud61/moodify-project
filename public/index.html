@@ -21,18 +21,18 @@
         <p>Welcome to the webinterface of <i>your</i> Moodify&trade;!</p>
 
         <div>
-            <a class="accordion w3-bar-item w3-button" style="text-align:center;">Modes</a>
+            <a class="accordion w3-bar-item w3-button" style="text-align:center;">Characteristics</a>
 
             <div class="panel">
                 <div>
                     <input type="radio" id="contactChoice1" onclick="updateChoice()"
                            name="contact" value="email">
-                    <label for="contactChoice1">Manual / Light Mode</label>
+                    <label for="contactChoice1">Colour</label>
                 </div>
                 <div>
                     <input type="radio" id="contactChoice2" onclick="updateChoice()"
                            name="contact" value="phone">
-                    <label for="contactChoice2">Mood Lighting Mode</label>
+                    <label for="contactChoice2">Brightness</label>
                 </div>
                 <div>
                     <input type="radio" id="contactChoice3" onclick="updateChoice()"
@@ -74,36 +74,46 @@
         <div class="w3-row">
             <label>Manual Light</label>
             <label>Auto LDR</label>
+            <label>Music Mode</label>
         </div>
         <div class="w3-row">
-            <label class="switch">
-                <input type="checkbox" id="ManualLight" onclick="sendUpdate(0);">
-                <span class="slider round"></span>
-                <div class="text"></div>
-            </label>
-            <label class="switch">
-                <input type="checkbox" id="LightIntensityMode" onclick="sendUpdate(1);">
-                <span class="slider round"></span>
-                <div class="text"></div>
-            </label>
+                <label class="switch">
+                    <input type="checkbox" id="ManualLight" onclick="sendModeUpdate(0);">
+                    <span class="slider round"></span>
+                    <div class="text"></div>
+                </label>
+                <label class="switch">
+                    <input type="checkbox" id="LightIntensityMode" onclick="sendModeUpdate(1);">
+                    <span class="slider round"></span>
+                    <div class="text"></div>
+                </label>
+                <label class="switch">
+                    <input type="checkbox" id="MusicMode" onclick="sendModeUpdate(2);">
+                    <span class="slider round"></span>
+                    <div class="text"></div>
+                </label>
         </div>
 
         <!-- Color palette -->
         <span class="custom-control custom-switch">
-                    <div id="colours">
-                        <div class="colourSquare whiteSquare"></div>
-                        <div class="colourSquare redSquare"></div>
-                        <div class="colourSquare blueSquare"></div>
-                        <div class="colourSquare greenSquare"></div>
-                    </div>
+            <div id="colours">
+                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>
+                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>
+                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>
+                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>
+                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>
+            </div>
 
             <!-- Slider for Intensity -->
-                    <div id="slidr" class="slidecontainer">
-                        <input id="range_slider" type="range" min="0" max="100" value="50" step="1" class="slider range">
-                        <div id="demo"></div>
-                        <!-- This appears behind the slider  <label>Intensity</label> -->
-                    </div>
-                </span>
+            <div id="slidr" class="slidecontainer">
+                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">
+                <div id="demo"></div>
+                <!-- This appears behind the slider  <label>Intensity</label> -->
+            </div>
+            <div id="musicToggle">
+
+            </div>
+        </span>
     </div>
 
 

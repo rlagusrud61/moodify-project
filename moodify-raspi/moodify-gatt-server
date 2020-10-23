@@ -16,7 +16,7 @@ class MoodifyAdvertisement(Advertisement):
     def __init__(self, index):
         Advertisement.__init__(self, index, "peripheral")
         self.add_local_name("Moodify")
-        self.add_service_uuid("8af3d338-4048-428f-9bc1-a206d183ac38")
+        self.add_service_uuid("953f08c4-8c8f-46f4-a48b-07c18dfb3447")
         self.include_tx_power = True
 
 
