@@ -136,7 +136,7 @@ class BrightnessCharacteristic(Characteristic):
         Characteristic.__init__(
             self, self.BRIGHTNESS_CHARACTERISTIC_UUID,
             ["notify", "read", "write"], service)
-        self.add_descriptor(ColourCharacteristicDescriptor(self))
+        self.add_descriptor(BrightnessCharacteristicDescriptor(self))
 
     def get_value(self):
         return dbus.ByteArray(self._value.encode())
