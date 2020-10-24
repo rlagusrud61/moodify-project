@@ -16,12 +16,12 @@ class StripControl:
 
     def __init__(self, e):
         self.colour = OFF
-        self.brightness = 1.0
+        self.brightness = 0.2
 
         self.__brightness_adjusted_colour = OFF
         self.__pixel_pin = board.D18
         self.__ORDER = neopixel.GRB
-        self.__num_pixels = 5
+        self.__num_pixels = 10
         self.__pixels = neopixel.NeoPixel(
             self.__pixel_pin,
             self.__num_pixels,
