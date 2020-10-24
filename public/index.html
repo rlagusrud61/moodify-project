@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
 </head>
 
 <body style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
@@ -67,7 +68,7 @@
     <div class="container top-section">
         <!--This is the light on the standard page-->
         <div class="circle flex">
-            <span class="light"></span>
+            <span id="bulb" class="light"></span>
         </div>
 
         <!-- Toggle Switch  -->
@@ -97,11 +98,14 @@
         <!-- Color palette -->
         <span class="custom-control custom-switch">
             <div id="colours">
-                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>
-                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>
-                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>
-                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>
-                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>
+
+
+
+<!--                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>-->
+<!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
+<!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
+<!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
+<!--                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>-->
             </div>
 
             <!-- Slider for Intensity -->
@@ -115,12 +119,10 @@
             </div>
         </span>
     </div>
-
-
-    <footer id="footer">
-        Moodify&trade;, the future we all wish we were living.
-    </footer>
 </div>
+<footer id="footer">
+    Moodify&trade;, the future we all wish we were living.
+</footer>
 </body>
 
 

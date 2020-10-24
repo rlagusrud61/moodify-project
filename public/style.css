@@ -7,6 +7,7 @@ html, body{
 
 #main{
     transition: margin-left .5s;
+    padding-bottom: 3rem;
 }
 
 #nestedbar{
@@ -54,9 +55,9 @@ html, body{
     z-index: 2;
     height: 400px;
     width: 400px;
-    background-color:white; /*dunno why but I need this*/
+    background-color:black; /*dunno why but I need this*/
     border-radius: 50%;
-    box-shadow: 0 0 15px 0 white;
+    box-shadow: 0 0 15px 0 black;
     display: inline-block;
 }
 
@@ -106,10 +107,8 @@ html, body{
 }
 
 #footer {
-    position: fixed;
-    bottom: 0;
     width: 100%;
-    height: 2.5rem;            /* Footer height */
+    height: 3rem;            /* Footer height */
 }
 
 /* The switch - the box around the slider */

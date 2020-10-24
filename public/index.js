@@ -1,4 +1,4 @@
-let colours, slidr, opt1, opt2, opt3, rangeSlider, manualLight, autoLDR, musicMode, music;
+let colours, slidr, opt1, opt2, opt3, rangeSlider, manualLight, autoLDR, musicMode, music, colourPicker, colourVal, bulb;
 let disconModal = document.getElementById("disconModal");
 let rangeValue = { current: 1.0, last: 1.0};
 
@@ -9,9 +9,34 @@ function loadIn(){
     opt2 = document.getElementById("contactChoice2");
     opt3 = document.getElementById("contactChoice3");
 
+    bulb = document.getElementById("bulb")
+
     manualLight = document.getElementById("ManualLight");
     autoLDR = document.getElementById("LightIntensityMode");
     musicMode = document.getElementById("MusicMode");
+
+    colourPicker = new iro.ColorPicker('#colours', {
+        layout: [
+            {
+                component: iro.ui.Box,
+                options: {
+                    width: 75,
+                    borderColor: '#ffffff',
+                    colour: "#000000"
+                }
+            },
+            {
+                component: iro.ui.Slider,
+                options: {
+                    width: 75,
+                    borderColor: '#000000',
+                    sliderType: 'hue'
+                }
+            }
+        ],
+        layoutDirection: "horizontal"
+    });
+    colourVal = colourPicker.color.hexString;
 
     music = document.getElementById("musicToggle")
 
@@ -24,6 +49,9 @@ function loadIn(){
         // rangeSlider.removeEventListener("mousemove", brightnessListener)
         brightnessListener()
     });
+
+    colourPicker.on('color:change', onColorChange);
+
     updateChoice();
 }
 
@@ -39,7 +67,14 @@ function updateChoice(){
     /*else{}*/
 }
 
-
+function onColorChange(color) {
+    ({r, g, b} = color.rgb);
+    let stringCode = `${r},${g},${b}`;
+    // console.log(stringCode);
+    bulb.style.background = color.hexString
+    bulb.style.boxShadow = `0px 0px 15px 0px ${color.hexString}`
+    sendColourUpdate(stringCode);
+}
 
 let span = document.getElementsByClassName("close")[0];
 
