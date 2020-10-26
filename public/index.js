@@ -62,7 +62,7 @@ function loadIn(){
 
 }
 
-function enableRadio(){
+function enableRadioButtons(){
     document.getElementById("manualLight").disabled = false;
     document.getElementById("autoLED").disabled = false;
     document.getElementById("musicMode").disabled = false;
@@ -76,7 +76,6 @@ function updateChoice(){
     if(opt1.checked){colours.style.visibility="visible"}
     if(opt2.checked){slidr.style.visibility="visible"}
     if(opt3.checked){music.style.visibility="visible"}
-    /*else{}*/
 }
 
 function onColorChange(color) {
@@ -137,5 +136,5 @@ let brightnessListener = function() {
 
 function disconnect(){
     bleDisconnect()
-    alert("You are now disconnected. Bai!");
+    alert("You are now disconnected.");
 }

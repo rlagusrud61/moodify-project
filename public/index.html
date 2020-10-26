@@ -20,7 +20,6 @@
     <div class="container">
         <h1 class="title">Moodify&trade;</h1>
         <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
-
         <div>
             <div>
                 <div>
@@ -44,8 +43,8 @@
 
     <div class="btn_holder">
         <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
-        <button onclick="getDevice();"  class="btn disconnect_btn" style="color:white">Connect</button>
-        <button onclick="disconnect();"  class="btn disconnect_btn" style="color:white">Disconnect</button>
+        <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">Connect</button>
+        <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
 
         <div id="disconModal" class="modal">
             <div class="modalContent">
@@ -57,7 +56,6 @@
 </div>
 
 
-
 <!-- Container for the light and toggle button and other features -->
 <div id="main">
     <!-- Glowing light -->
@@ -66,27 +64,14 @@
         <div class="circle flex">
             <span id="bulb" class="light"></span>
         </div>
-
         <!-- Color palette -->
         <span class="custom-control custom-switch">
-            <div id="colours">
-
-
-
-<!--                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>-->
-<!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
-<!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
-<!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
-               <!-- <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button> -->
-            </div>
-
             <!-- Slider for Intensity -->
             <div id="slidr" class="slidecontainer">
                 <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">
                 <div id="demo"></div>
                 <!-- This appears behind the slider  <label>Intensity</label> -->
             </div>
-            
             <div id="musicToggle"></div>
         </span>
     </div>

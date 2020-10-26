@@ -31,7 +31,7 @@ async function getDevice() {
         console.log('> Name:             ' + myDevice.name);
         console.log('> Id:               ' + myDevice.id);
         console.log('> Connected:        ' + myDevice.gatt.connected);
-         enableRadio();
+        enableRadioButtons();
         await establishConnection()
     } catch(error)  {
         console.log('Argh! ' + error);
