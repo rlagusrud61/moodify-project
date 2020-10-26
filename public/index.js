@@ -31,9 +31,7 @@ function closing(){disconModal.style.display = "none";}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target === disconModal) {
-        modal.style.display = "none";
-    }
+    if (event.target === disconModal){modal.style.display = "none";}
 }
 
 // Debugger function for Master Puru <3
