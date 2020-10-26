@@ -2,19 +2,20 @@ import time
 import math
 import threading
 import pyaudio
+import sounddevice
 import board
 import neopixel
 import wave
 import numpy as np
 
 OFF = (0, 0, 0)
-
+CHUNK = 4096
 
 def brightnessAdjustedColour(colour, brightness):
     return tuple(math.floor(brightness * colour) for colour in colour)
 
 
-def wavelength_to_rgb(wavelength, gamma = 0.8)
+def wavelength_to_rgb(wavelength, gamma = 0.8):
     wavelength = float(wavelength)
     if 380 <= wavelength <= 440:
         attenuation = 0.3 + 0.7 * (wavelength - 380) / (440 - 380)
@@ -49,6 +50,7 @@ def wavelength_to_rgb(wavelength, gamma = 0.8)
     R *= 255
     G *= 255
     B *= 255
+    print(R, G, B)
     return tuple([int(R), int(G), int(B)])
 
 
@@ -116,13 +118,13 @@ class StripControl:
             self.__e.clear()
 
     def soundAnalyze(self, stream):
-        data = stream.read(8192, exception_on_overflow=False)
-        waveData = wave.struct.unpack("%dh"%(8192), data)
+        data = stream.read(CHUNK, exception_on_overflow=False)
+        waveData = wave.struct.unpack("%dh"%(CHUNK), data)
         npArrayData = np.array(waveData)
         volume = npArrayData[1:].argmax() + 1
         fftData=np.abs(np.fft.rfft(npArrayData))
         which = fftData[1:].argmax() + 1
-        thefreq = which*44100/8192
+        thefreq = which*44100/CHUNK
         return[npArrayData[volume], thefreq]
 
     def __musicLoop(self):
@@ -135,35 +137,42 @@ class StripControl:
                             frames_per_buffer = 8192)
         try:
             while True:
+                print("Going to wait!!!")
                 self.__e.wait()
+                print("Finsihed Waiting!!")
                 # TODO: do the boogy
                 # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
                 # Use brightnessAdjustedColour for proper values if needed.
+                print("finished waiting. Goto BOOGIE")
                 while self.__e.isSet():
+                    targetFreq = 0
+                    lightWave = 0
+                    #print(f"Party goes on, {self.__e.isSet()}")
                     soundData = self.soundAnalyze(stream)
                     if 100 < soundData[1] < 880:
+                        #print(f"soundData: {soundData[1]}")
                         freqArray[freqCounter] = soundData[1]
-                        freqCounter += (freqCounter + 1) % 5
+                        freqCounter = (freqCounter + 1) % 5
+                    #print(f"FreqArray: {freqArray}")
                     for i in freqArray:
-                        targetFreq += freqArray[i]
+                        targetFreq += i/5
+                    #print(f"targetbefore: {targetFreq}")
                     if 100 < targetFreq < 880:
+                        #print(f"target freq: {targetFreq}")
                         lightWave = targetFreq * (37/78) + 333
-
+                    #print(f"lightwave: {lightWave}")
                     targetRGB = list(wavelength_to_rgb(lightWave))
                     currentRGB = list(self.colour)
-                    # difference = tuple(((x-y) / 10) for x, y in zip(targetRGB, currentRGB))
-                    while currentRGB != targetRGB:
-                        for i in range(3):
-                            if 10 >= currentRGB[i] - targetRGB[i] >= -10:
-                                currentRGB[i] = targetRGB[i]
-                            else:
-                                if currentRGB[i] < targetRGB[i]:
-                                    currentRGB[i] += 10
-                                else:
-                                    currentRGB[i] -= 10
-                        self.setColour(tuple(currentRGB))
+                    #print(f"is equal: {currentRGB == targetRGB}")
+                    #print(f"tg: {targetRGB}, curr:{currentRGB}")
+                    increment = tuple((x-y)/5.0 for x, y in zip(targetRGB, currentRGB))
+                    for incr in range(0,5):
+                        #print("In while loooopppp!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        currentRGB = tuple(x + y for x, y in zip(increment, currentRGB))
+                        #print(f"{tuple(currentRGB)}")
+                        self.setColour(currentRGB)
                         self.show_colours()
-                        time.sleep(0.02)
+                        time.sleep(0.01)
         except Exception:
             stream.stop_stream()
             stream.close()

@@ -63,7 +63,6 @@ class ToggleModeCharacteristic(Characteristic):
         self._value = ''.join([str(v) for v in value])
         print(self._value)
         PI_CONTROL.update_mode(self._value)
-        print('New value:', self._value)
         if self.notifying:
             self.notify()
 

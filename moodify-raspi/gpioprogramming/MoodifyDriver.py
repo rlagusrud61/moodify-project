@@ -117,9 +117,10 @@ class MoodifyLogic:
             while True:
                 time.sleep(5*self.delayTime)
                 with self._lock:
-                    print(self.manualLED, self.musicMode, self.musicMode)
-
+                    print(self.manualLED, self.autoLDR, self.musicMode)
+                    print(self.__e.isSet())
                     if (self.__e.isSet() and not self.musicMode):
+                        print("shutting down music")
                         self.__e.clear()
                     
                     if self.manualLED:
