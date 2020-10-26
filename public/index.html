@@ -18,24 +18,54 @@
     <h5 class="w3-bar-item">Menu</h5>
     <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Left1')">Modes</button>
     <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Left2')">Colour</button>
-</div>
+    <div class="btn_holder">
+        <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
+        <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">&nbsp;&nbsp;&nbsp;Connect&nbsp;&nbsp;</button>
+        <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
 
-<div style="margin-left:130px; background-color: #674E7F">
-    <div id="Left1" class="w3-container city w3-animate-left" style="display:none;width: 30%;height: 100%">
-        <form class="w3-container w3-card-4">
-            <p>
-                <input class="w3-radio" type="radio" name="mode" value="manual">
-                <label>Manual/Light Mode</label></p>
-            <p>
-                <input class="w3-radio" type="radio" name="mode" value="mood">
-                <label>Mood Lighting</label></p>
-            <p>
-                <input class="w3-radio" type="radio" name="mode" value="music">
-                <label>Music Mode</label></p>
-        </form>
+        <div id="disconModal" class="modal">
+            <div class="modalContent">
+                <span class="close" onclick="closing()">&times;</span>
+                <p style="color:black;">You have been disconnected</p>
+            </div>
+        </div>
     </div>
 </div>
 
+<div style="margin-left:130px; background-color: #674E7F">
+    <div id="Left1" class="w3-container city w3-animate-left" style="display:none">
+        <form class="w3-container w3-card-4">
+                        <div class="panel">
+                <div>
+                    <input type="radio" id="contactChoice1" onclick="updateChoice()"
+                           name="contact" value="email">
+                    <label for="contactChoice1">Colour</label>
+                </div>
+                <div>
+                    <input type="radio" id="contactChoice2" onclick="updateChoice()"
+                           name="contact" value="phone">
+                    <label for="contactChoice2">Brightness</label>
+                </div>
+                <div>
+                    <input type="radio" id="contactChoice3" onclick="updateChoice()"
+                           name="contact" value="mail">
+                    <label for="contactChoice3">Music Mode</label>
+                </div>
+            </div>
+<!--            <p>-->
+<!--                <input class="w3-radio" type="radio" name="mode" id="manual" value="manual">-->
+<!--                <label>Manual/Light Mode</label>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <input class="w3-radio" type="radio" name="mode" id="mood" value="mood">-->
+<!--                <label>Mood Lighting</label>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <input class="w3-radio" type="radio" name="mode" id="music" value="music">-->
+<!--                <label>Music Mode</label>-->
+<!--            </p>-->
+        </form>
+    </div>
 </div>
 
 
@@ -72,18 +102,7 @@
 <!--        <a href="#" class="w3-bar-item w3-button" style="text-align: center">Alarm</a>-->
 <!--    </div>-->
 
-<!--    <div class="btn_holder">-->
-<!--        &lt;!&ndash; For now onclick of Disconnect calls disconnect function in index.js (alert box) &ndash;&gt;-->
-<!--        <button onclick="getDevice();"  class="btn disconnect_btn" style="color:white">&nbsp;&nbsp;&nbsp;Connect&nbsp;&nbsp;</button>-->
-<!--        <button onclick="disconnect();"  class="btn disconnect_btn" style="color:white">Disconnect</button>-->
 
-<!--        <div id="disconModal" class="modal">-->
-<!--            <div class="modalContent">-->
-<!--                <span class="close" onclick="closing()">&times;</span>-->
-<!--                <p style="color:black;">You have been disconnected</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 <!--</div>-->
 
 
@@ -163,6 +182,7 @@ function openLink(evt, animName) {
   tablinks = document.getElementsByClassName("tablink");
   document.getElementById(animName).style.display = "block";
 }
+
 
 
 </script>

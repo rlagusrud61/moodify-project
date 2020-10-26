@@ -52,20 +52,32 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-    updateChoice();
+//    updateChoice();
+
+     if (myDevice === undefined) {
+        document.getElementById("manual").disabled = true;
+        document.getElementById("mood").disabled = true;
+        document.getElementById("music").disabled = true;
+     }
+
 }
 
-
-function updateChoice(){
-    colours.style.visibility="hidden";
-    slidr.style.visibility="hidden";
-    music.style.visibility="hidden";
-
-    if(opt1.checked){colours.style.visibility="visible"}
-    if(opt2.checked){slidr.style.visibility="visible"}
-    if(opt3.checked){music.style.visibility="visible"}
-    /*else{}*/
+function enableRadio(){
+    document.getElementById("manual").disabled = false;
+    document.getElementById("mood").disabled = false;
+    document.getElementById("music").disabled = false;
 }
+
+//function updateChoice(){
+//    colours.style.visibility="hidden";
+//    slidr.style.visibility="hidden";
+//    music.style.visibility="hidden";
+//
+//    if(opt1.checked){colours.style.visibility="visible"}
+//    if(opt2.checked){slidr.style.visibility="visible"}
+//    if(opt3.checked){music.style.visibility="visible"}
+//    /*else{}*/
+//}
 
 function onColorChange(color) {
     ({r, g, b} = color.rgb);
