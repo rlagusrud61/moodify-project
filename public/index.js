@@ -52,7 +52,7 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-//    updateChoice();
+    updateChoice();
 
      if (myDevice === undefined) {
         document.getElementById("manualLight").disabled = true;
@@ -73,9 +73,9 @@ function updateChoice(){
     slidr.style.visibility="hidden";
     music.style.visibility="hidden";
 
-    if(opt1.checked){colours.style.visibility="visible"}
-    if(opt2.checked){slidr.style.visibility="visible"}
-    if(opt3.checked){music.style.visibility="visible"}
+    if(manualLight.checked){colours.style.visibility="visible"}
+    if(autoLED.checked){slidr.style.visibility="visible"}
+    if(musicMode.checked){music.style.visibility="visible"}
 }
 
 function onColorChange(color) {
@@ -136,5 +136,8 @@ let brightnessListener = function() {
 
 function disconnect(){
     bleDisconnect()
+    document.getElementById("manualLight").disabled = true;
+    document.getElementById("autoLED").disabled = true;
+    document.getElementById("musicMode").disabled = true;
     alert("You are now disconnected.");
 }
