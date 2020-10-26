@@ -147,7 +147,7 @@ async function writeColour(colour) {
     let commandValue = new Uint8Array(uint8array.encode(colour));
 
     try {
-        await modeCharacteristic.writeValue(commandValue);
+        await colourCharacteristic.writeValue(commandValue);
     } catch (error) {
         console.log('Argh! ' + error)
     }
@@ -161,7 +161,7 @@ async function writeBrightness(brightness) {
     let commandValue = new Uint8Array(uint8array.encode(brightness));
 
     try {
-        await modeCharacteristic.writeValue(commandValue);
+        await brightnessCharacteristic.writeValue(commandValue);
     } catch (error) {
         console.log('Argh! ' + error)
     }
