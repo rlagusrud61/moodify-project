@@ -31,6 +31,7 @@ async function getDevice() {
         console.log('> Name:             ' + myDevice.name);
         console.log('> Id:               ' + myDevice.id);
         console.log('> Connected:        ' + myDevice.gatt.connected);
+        enableRadioButtons();
         await establishConnection()
     } catch(error)  {
         console.log('Argh! ' + error);
@@ -147,7 +148,7 @@ async function writeColour(colour) {
     let commandValue = new Uint8Array(uint8array.encode(colour));
 
     try {
-        await colourCharacteristic.writeValue(commandValue);
+        await modeCharacteristic.writeValue(commandValue);
     } catch (error) {
         console.log('Argh! ' + error)
     }
@@ -161,7 +162,7 @@ async function writeBrightness(brightness) {
     let commandValue = new Uint8Array(uint8array.encode(brightness));
 
     try {
-        await brightnessCharacteristic.writeValue(commandValue);
+        await modeCharacteristic.writeValue(commandValue);
     } catch (error) {
         console.log('Argh! ' + error)
     }

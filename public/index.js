@@ -5,9 +5,9 @@ let rangeValue = { current: 1.0, last: 1.0};
 function loadIn(){
     colours = document.getElementById("colours");
     slidr = document.getElementById("slidr");
-    opt1 = document.getElementById("contactChoice1");
-    opt2 = document.getElementById("contactChoice2");
-    opt3 = document.getElementById("contactChoice3");
+    opt1 = document.getElementById("manual");
+    opt2 = document.getElementById("mood");
+    opt3 = document.getElementById("music");
 
     bulb = document.getElementById("bulb")
 
@@ -53,6 +53,11 @@ function loadIn(){
     colourPicker.on('color:change', onColorChange);
 
     updateChoice();
+
+    opt1.disabled = true;
+    opt2.disabled = true;
+    opt3.disabled = true;
+
 }
 
 
@@ -87,22 +92,27 @@ window.onclick = function(event) {
     if (event.target === disconModal){modal.style.display = "none";}
 }
 
+function changeState(flag){
+    updateChoice();
+    sendModeUpdate(flag);
+}
+
 // Debugger function for Master Puru <3
 function sendModeUpdate(flag) {
     let text;
-    if (manualLight.checked && flag === 0) {
-        autoLDR.checked = false;
-        musicMode.checked = false;
+    if (opt1.checked && flag === 0) {
+        opt2.checked = false;
+        opt3.checked = false;
         text = "100"
-    } else if (autoLDR.checked && flag === 1) {
-        manualLight.checked = false;
-        musicMode.checked = false;
+    } else if (opt2.checked && flag === 1) {
+        opt1.checked = false;
+        opt3.checked = false;
         text = "010"
-    } else if (musicMode.checked && flag === 2) {
-        manualLight.checked = false;
-        autoLDR.checked = false;
+    } else if (opt3.checked && flag === 2) {
+        opt1.checked = false;
+        opt2.checked = false;
         text = "001"
-    } else if (!(autoLDR.checked || manualLight.checked || musicMode.checked)) {
+    } else if (!(opt1.checked || opt2.checked || opt3.checked)) {
         text = "000"
     }
     console.log({mode: text})
