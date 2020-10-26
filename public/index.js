@@ -9,11 +9,11 @@ function loadIn(){
     opt2 = document.getElementById("brightness");
     opt3 = document.getElementById("musicmode");
 
-    bulb = document.getElementById("bulb")
+    bulb = document.getElementById("bulb");
 
-    manualLight = document.getElementById("ManualLight");
-    autoLDR = document.getElementById("LightIntensityMode");
-    musicMode = document.getElementById("MusicMode");
+    manualLight = document.getElementById("manualLight");
+    autoLDR = document.getElementById("autoLDR");
+    musicMode = document.getElementById("musicMode");
 
     colourPicker = new iro.ColorPicker('#colours', {
         layout: [
@@ -54,18 +54,18 @@ function loadIn(){
 
     updateChoice();
 
-     if (myDevice === undefined) {
-        document.getElementById("manualLight").disabled = true;
-        document.getElementById("autoLED").disabled = true;
-        document.getElementById("musicMode").disabled = true;
+     if (!myDevice.gatt.connected) {
+        manualLight.disabled = true;
+        autoLDR.disabled = true;
+        musicMode.disabled = true;
      }
 
 }
 
 function enableRadioButtons(){
-    document.getElementById("manualLight").disabled = false;
-    document.getElementById("autoLED").disabled = false;
-    document.getElementById("musicMode").disabled = false;
+    manualLight.disabled = false;
+    autoLDR.disabled = false;
+    musicMode.disabled = false;
 }
 
 function updateChoice(){
@@ -74,7 +74,7 @@ function updateChoice(){
     music.style.visibility="hidden";
 
     if(manualLight.checked){colours.style.visibility="visible"}
-    if(autoLED.checked){slidr.style.visibility="visible"}
+    if(autoLDR.checked){slidr.style.visibility="visible"}
     if(musicMode.checked){music.style.visibility="visible"}
 }
 
@@ -85,17 +85,6 @@ function onColorChange(color) {
     bulb.style.background = color.hexString
     bulb.style.boxShadow = `0px 0px 15px 0px ${color.hexString}`
     sendColourUpdate(stringCode);
-}
-
-let span = document.getElementsByClassName("close")[0];
-
-function modalPopUp() {disconModal.style.display = "block";}
-
-function closing(){disconModal.style.display = "none";}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target === disconModal){modal.style.display = "none";}
 }
 
 // Debugger function for Master Puru <3
@@ -136,8 +125,8 @@ let brightnessListener = function() {
 
 function disconnect(){
     bleDisconnect()
-    document.getElementById("manualLight").disabled = true;
-    document.getElementById("autoLED").disabled = true;
-    document.getElementById("musicMode").disabled = true;
+    manualLight.disabled = true;
+    autoLDR.disabled = true;
+    musicMode.disabled = true;
     alert("You are now disconnected.");
 }

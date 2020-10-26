@@ -28,9 +28,9 @@
                     <label for="manualLight">Manual Light</label>
                 </div>
                 <div>
-                    <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
+                    <input type="radio" id="autoLDR" onclick="sendModeUpdate(1)"
                            name="radio" value="bright">
-                    <label for="autoLED">Auto LED</label>
+                    <label for="autoLDR">Auto LDR</label>
                 </div>
                 <div>
                     <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
@@ -45,13 +45,6 @@
         <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
         <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">Connect</button>
         <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
-
-        <div id="disconModal" class="modal">
-            <div class="modalContent">
-                <span class="close" onclick="closing()">&times;</span>
-                <p style="color:black;">You have been disconnected</p>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -65,6 +58,7 @@
             <span id="bulb" class="light"></span>
         </div>
         <!-- Color palette -->
+        <div id="colours"></div>
         <span class="custom-control custom-switch">
             <!-- Slider for Intensity -->
             <div id="slidr" class="slidecontainer">
