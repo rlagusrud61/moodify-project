@@ -9,7 +9,7 @@ import wave
 import numpy as np
 
 OFF = (0, 0, 0)
-CHUNK = 4096
+CHUNK = 2048
 
 def brightnessAdjustedColour(colour, brightness):
     return tuple(math.floor(brightness * colour) for colour in colour)
@@ -58,7 +58,7 @@ class StripControl:
 
     def __init__(self, e):
         self.colour = OFF
-        self.brightness = 0.2
+        self.brightness = 0.5
 
         self.__brightness_adjusted_colour = OFF
         self.__pixel_pin = board.D18
@@ -162,17 +162,18 @@ class StripControl:
                         lightWave = targetFreq * (37/78) + 333
                     #print(f"lightwave: {lightWave}")
                     targetRGB = list(wavelength_to_rgb(lightWave))
-                    currentRGB = list(self.colour)
+                    # currentRGB = list(self.colour)
+                    self.setColour(targetRGB)
+                    self.show_colours()
                     #print(f"is equal: {currentRGB == targetRGB}")
                     #print(f"tg: {targetRGB}, curr:{currentRGB}")
-                    increment = tuple((x-y)/5.0 for x, y in zip(targetRGB, currentRGB))
-                    for incr in range(0,5):
-                        #print("In while loooopppp!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        currentRGB = tuple(x + y for x, y in zip(increment, currentRGB))
-                        #print(f"{tuple(currentRGB)}")
-                        self.setColour(currentRGB)
-                        self.show_colours()
-                        time.sleep(0.01)
+                    # increment = tuple((x-y)/5.0 for x, y in zip(targetRGB, currentRGB))
+                    # for incr in range(0,5):
+                    #     #print("In while loooopppp!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    #     currentRGB = tuple(max(x + y, 0) for x, y in zip(increment, currentRGB))
+                    #     #print(f"{tuple(currentRGB)}")
+                    #     self.setColour(currentRGB)
+                    #     self.show_colours()
         except Exception:
             stream.stop_stream()
             stream.close()
