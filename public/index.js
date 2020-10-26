@@ -1,6 +1,10 @@
-let colours, slidr, opt1, opt2, opt3, rangeSlider, manualLight, autoLDR, musicMode, music, colourPicker, colourVal, bulb;
+let colours, slidr, opt1, opt2, opt3, rangeSlider, music, colourPicker, colourVal, bulb;
 let disconModal = document.getElementById("disconModal");
 let rangeValue = { current: 1.0, last: 1.0};
+
+let manualLight = document.getElementById("manualLight");
+let autoLED = document.getElementById("autoLED");
+let musicMode = document.getElementById("musicMode");
 
 function loadIn(){
     colours = document.getElementById("colours");
@@ -10,10 +14,6 @@ function loadIn(){
     opt3 = document.getElementById("musicmode");
 
     bulb = document.getElementById("bulb")
-
-    manualLight = document.getElementById("ManualLight");
-    autoLDR = document.getElementById("LightIntensityMode");
-    musicMode = document.getElementById("MusicMode");
 
     colourPicker = new iro.ColorPicker('#colours', {
         layout: [
@@ -52,20 +52,20 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-    updateChoice();
+//    updateChoice();
 
-     if (myDevice === undefined) {
-        document.getElementById("manualLight").disabled = true;
-        document.getElementById("autoLED").disabled = true;
-        document.getElementById("musicMode").disabled = true;
+     if (!myDevice.gatt.connected) {
+        manualLight.disabled = true;
+        autoLED.disabled = true;
+        musicMode.disabled = true;
      }
 
 }
 
 function enableRadioButtons(){
-    document.getElementById("manualLight").disabled = false;
-    document.getElementById("autoLED").disabled = false;
-    document.getElementById("musicMode").disabled = false;
+    manualLight.disabled = false;
+    autoLED.disabled = false;
+    musicMode.disabled = false;
 }
 
 function updateChoice(){
@@ -102,18 +102,18 @@ window.onclick = function(event) {
 function sendModeUpdate(flag) {
     let text;
     if (manualLight.checked && flag === 0) {
-        autoLDR.checked = false;
+        autoLED.checked = false;
         musicMode.checked = false;
         text = "100"
-    } else if (autoLDR.checked && flag === 1) {
+    } else if (autoLED.checked && flag === 1) {
         manualLight.checked = false;
         musicMode.checked = false;
         text = "010"
     } else if (musicMode.checked && flag === 2) {
         manualLight.checked = false;
-        autoLDR.checked = false;
+        autoLED.checked = false;
         text = "001"
-    } else if (!(autoLDR.checked || manualLight.checked || musicMode.checked)) {
+    } else if (!(autoLED.checked || manualLight.checked || musicMode.checked)) {
         text = "000"
     }
     console.log({mode: text})
@@ -136,8 +136,8 @@ let brightnessListener = function() {
 
 function disconnect(){
     bleDisconnect()
-    document.getElementById("manualLight").disabled = true;
-    document.getElementById("autoLED").disabled = true;
-    document.getElementById("musicMode").disabled = true;
+    manualLight.disabled = true;
+    autoLED.disabled = true;
+    musicMode.disabled = true;
     alert("You are now disconnected.");
 }
