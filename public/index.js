@@ -7,6 +7,7 @@ let autoLED = document.getElementById("autoLED");
 let musicMode = document.getElementById("musicMode");
 
 function loadIn(){
+    compatibilityCtr();
     colours = document.getElementById("colours");
     slidr = document.getElementById("slidr");
     opt1 = document.getElementById("colourbutton");
@@ -54,9 +55,9 @@ function loadIn(){
 
     updateChoice();
 
-        document.getElementById("manualLight").disabled = true;
-        document.getElementById("autoLED").disabled = true;
-        document.getElementById("musicMode").disabled = true;
+    document.getElementById("manualLight").disabled = true;
+    document.getElementById("autoLED").disabled = true;
+    document.getElementById("musicMode").disabled = true;
 
 }
 
@@ -139,4 +140,80 @@ function disconnect(){
     document.getElementById("autoLED").disabled = true;
     document.getElementById("musicMode").disabled = true;
     alert("You are now disconnected.");
+}
+
+function compatibilityCtr(){
+    var nAgt = navigator.userAgent;
+    var browserName  = navigator.appName;
+    var fullV  = ''+parseFloat(navigator.appVersion);
+    var majorV = parseInt(navigator.appVersion,10);
+    var navUsAg = window.navigator.userAgent;
+
+    var OSName = "Unknown";
+    if (navUsAg.indexOf("Windows NT 10.0")!= -1) {OSName="Windows 10";}
+    else if (navUsAg.indexOf("Windows NT 6.2") != -1) {OSName="Windows 8";}
+    else if (navUsAg.indexOf("Windows NT 6.1") != -1) OSName="Windows 7";
+    else if (navUsAg.indexOf("Windows NT 6.0") != -1) OSName="Windows Vista";
+    else if (navUsAg.indexOf("Windows NT 5.1") != -1) OSName="Windows XP";
+    else if (navUsAg.indexOf("Windows NT 5.0") != -1) OSName="Windows 2000";
+    else if (navUsAg.indexOf("Mac")            != -1) OSName="Mac/iOS";
+    else if (navUsAg.indexOf("X11")            != -1) OSName="UNIX";
+    else if (navUsAg.indexOf("Linux")          != -1) OSName="Linux";
+
+
+    // In Opera, the true version is after "Opera" or after "Version"
+    if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+    browserName = "Opera";
+    fullV = nAgt.substring(verOffset+6);
+    if ((verOffset=nAgt.indexOf("Version"))!=-1)
+    fullV = nAgt.substring(verOffset+8);
+    }
+    // In MSIE, the true version is after "MSIE" in userAgent
+    else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+    browserName = "MSIE";
+    }
+    // In Chrome, the true version is after "Chrome"
+    else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+    browserName = "Chrome";
+    fullV = nAgt.substring(verOffset+7);
+    }
+    // In Safari, the true version is after "Safari" or after "Version"
+    else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+    browserName = "Safari";
+    }
+    // In Firefox, the true version is after "Firefox"
+    else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+    browserName = "Firefox";
+    }
+    // In most other browsers, "name/version" is at the end of userAgent
+    else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
+            (verOffset=nAgt.lastIndexOf('/')) )
+    {
+    browserName = nAgt.substring(nameOffset,verOffset);
+    fullV = nAgt.substring(verOffset+1);
+    }
+    // trim the fullV string at semicolon/space if present
+    if ((ix=fullV.indexOf(";"))!=-1)
+    fullV=fullV.substring(0,ix);
+    if ((ix=fullV.indexOf(" "))!=-1)
+    fullV=fullV.substring(0,ix);
+
+    majorV = parseInt(''+fullV,10);
+    if (isNaN(majorV)) {
+    fullV  = ''+parseFloat(navigator.appVersion);
+    majorV = parseInt(navigator.appVersion,10);
+    }
+
+    if(browserName == "Firefox"){
+        alert("The web interface for Moodify does not support this browser.");
+    } else if(browserName == "Safari"){
+        alert("The web interface for Moodify does not support this browser.");
+    } else if(browserName == "MSIE"){
+        alert("The web interface for Moodify does not support this browser.");
+    } else if(browserName == "Chrome" && (majorV < 56 || (majorV < 70 && OSName == "Windows 10"))){
+        alert("Please update Google Chrome.");
+    } else if(browserName == "Edge" && majorV > 79){
+        alert("The newer versions of Edge are not compatible. Please use version 79 or lower.");}
+    else if (browserName == "Opera" && (majorV < 43 || (majorV < 57 && OSName == "Windows 10") )){
+        alert("Please update Opera.");}
 }
