@@ -11,45 +11,42 @@
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
 </head>
 
-<body style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
+<div style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
 
-<!-- Side Navigation bar -->
-<div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
+    <!-- Side Navigation bar -->
+    <div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
 
-    <!-- Elements of Side Nav bar -->
-    <div class="container">
-        <h1 class="title">Moodify&trade;</h1>
-        <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
-        <div>
+        <!-- Elements of Side Nav bar -->
+        <div class="container">
+            <h1 class="title">Moodify&trade;</h1>
+            <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
             <div>
-                <div>
-                    <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
-                           name="radio" value="color">
-                    <label for="manualLight">Manual Light</label>
-                </div>
-                <div>
-                    <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
-                           name="radio" value="bright">
-                    <label for="autoLED">Auto LED</label>
-                </div>
-                <div>
-                    <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
-                           name="radio" value="music">
-                    <label for="musicMode">Music Mode</label>
-                </div>
+                <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
+                       name="radio" value="color">
+                <label for="manualLight">Manual Light</label>
+            </div>
+            <div>
+                <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
+                       name="radio" value="bright">
+                <label for="autoLED">Auto LED</label>
+            </div>
+            <div>
+                <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
+                       name="radio" value="music">
+                <label for="musicMode">Music Mode</label>
             </div>
         </div>
-    </div>
 
-    <div class="btn_holder">
-        <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
-        <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">Connect</button>
-        <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
+        <div class="btn_holder">
+            <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
+            <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">Connect</button>
+            <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
 
-        <div id="disconModal" class="modal">
-            <div class="modalContent">
-                <span class="close" onclick="closing()">&times;</span>
-                <p style="color:black;">You have been disconnected</p>
+            <div id="disconModal" class="modal">
+                <div class="modalContent">
+                    <span class="close" onclick="closing()">&times;</span>
+                    <p style="color:black;">You have been disconnected</p>
+                </div>
             </div>
         </div>
     </div>
