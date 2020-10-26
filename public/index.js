@@ -52,20 +52,20 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-//    updateChoice();
+    updateChoice();
 
-     if (!myDevice.gatt.connected) {
-        manualLight.disabled = true;
-        autoLED.disabled = true;
-        musicMode.disabled = true;
-     }
+    if (myDevice === null){
+        document.getElementById("manualLight").disabled = true;
+        document.getElementById("autoLED").disabled = true;
+        document.getElementById("musicMode").disabled = true;
+    }
 
 }
 
 function enableRadioButtons(){
-    manualLight.disabled = false;
-    autoLED.disabled = false;
-    musicMode.disabled = false;
+    document.getElementById("manualLight").disabled = false;
+    document.getElementById("autoLED").disabled = false;
+    document.getElementById("musicMode").disabled = false;
 }
 
 function updateChoice(){
@@ -73,9 +73,9 @@ function updateChoice(){
     slidr.style.visibility="hidden";
     music.style.visibility="hidden";
 
-    if(manualLight.checked){colours.style.visibility="visible"}
-    if(autoLED.checked){slidr.style.visibility="visible"}
-    if(musicMode.checked){music.style.visibility="visible"}
+    if(document.getElementById("manualLight").checked){colours.style.visibility="visible"}
+    if(document.getElementById("autoLED").checked){slidr.style.visibility="visible"}
+    if(document.getElementById("musicMode").checked){music.style.visibility="visible"}
 }
 
 function onColorChange(color) {
@@ -101,19 +101,20 @@ window.onclick = function(event) {
 // Debugger function for Master Puru <3
 function sendModeUpdate(flag) {
     let text;
-    if (manualLight.checked && flag === 0) {
-        autoLED.checked = false;
-        musicMode.checked = false;
+    updateChoice();
+    if (document.getElementById("manualLight").checked && flag === 0) {
+        document.getElementById("autoLED").checked = false;
+        document.getElementById("musicMode").checked = false;
         text = "100"
-    } else if (autoLED.checked && flag === 1) {
-        manualLight.checked = false;
-        musicMode.checked = false;
+    } else if (document.getElementById("autoLED").checked && flag === 1) {
+        document.getElementById("manualLight").checked = false;
+        document.getElementById("musicMode").checked = false;
         text = "010"
-    } else if (musicMode.checked && flag === 2) {
-        manualLight.checked = false;
-        autoLED.checked = false;
+    } else if (document.getElementById("musicMode").checked && flag === 2) {
+       document.getElementById("manualLight").checked = false;
+        document.getElementById("autoLED").checked = false;
         text = "001"
-    } else if (!(autoLED.checked || manualLight.checked || musicMode.checked)) {
+    } else if (!( document.getElementById("autoLED").checked || document.getElementById("manualLight").checked || document.getElementById("musicMode").checked)) {
         text = "000"
     }
     console.log({mode: text})
@@ -136,8 +137,8 @@ let brightnessListener = function() {
 
 function disconnect(){
     bleDisconnect()
-    manualLight.disabled = true;
-    autoLED.disabled = true;
-    musicMode.disabled = true;
+    document.getElementById("manualLight").disabled = true;
+    document.getElementById("autoLED").disabled = true;
+    document.getElementById("musicMode").disabled = true;
     alert("You are now disconnected.");
 }

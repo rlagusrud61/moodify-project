@@ -1,4 +1,4 @@
-let filters = [],
+var filters = [],
     myDevice, myServer, myService, myChars, modeCharacteristic, colourCharacteristic, brightnessCharacteristic,
     myServiceUUID = '953f08c4-8c8f-46f4-a48b-07c18dfb3447',
     flag = '000',
