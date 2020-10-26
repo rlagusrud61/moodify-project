@@ -54,11 +54,9 @@ function loadIn(){
 
     updateChoice();
 
-    if (myDevice === null){
         document.getElementById("manualLight").disabled = true;
         document.getElementById("autoLED").disabled = true;
         document.getElementById("musicMode").disabled = true;
-    }
 
 }
 
