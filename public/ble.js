@@ -1,14 +1,12 @@
-let filters = [];
-let myDevice;
-let myServer;
-let myService;
-let myChars;
-let myCharacteristic;
-let myServiceUUID = '953f08c4-8c8f-46f4-a48b-07c18dfb3447';
-let flag = '000';
-let myCharacteristicUUID = '58590b45-241a-4230-b020-700ac827a8fb';
-let uint8array = new TextEncoder()
-let string = new TextDecoder()
+let filters = [],
+    myDevice, myServer, myService, myChars, modeCharacteristic, colourCharacteristic, brightnessCharacteristic,
+    myServiceUUID = '953f08c4-8c8f-46f4-a48b-07c18dfb3447',
+    flag = '000',
+    modeCharUUID = '58590b45-241a-4230-b020-700ac827a8fb',
+    colourCharUUID = '2f59ede8-dd70-4748-94a3-3ca4f6663a42',
+    brightnessCharUUID = 'c0cf5135-aae3-4a8e-ad4c-e33614753037',
+    uint8array = new TextEncoder(),
+    string = new TextDecoder();
 
 async function getDevice() {
     let services = [myServiceUUID];
@@ -74,11 +72,15 @@ async function getChar() {
             await getChars()
         }
         myChars.forEach(function (char) {
-            if (myCharacteristicUUID === char.uuid) {
-                myCharacteristic = char
+            if (modeCharUUID === char.uuid) {
+                modeCharacteristic = char
+            } else if (colourCharUUID === char.uuid) {
+                colourCharacteristic = char
+            } else if (brightnessCharUUID === char.uuid) {
+                brightnessCharacteristic = char
             }
         });
-        myCharacteristic.startNotifications().then(subscribeToChanges)
+        modeCharacteristic.startNotifications().then(subscribeToChanges)
     } catch (error) {
         console.log('Argh! ' + error)
     }
@@ -96,7 +98,7 @@ async function establishConnection() {
     console.log(myServer)
     console.log(myService)
     console.log(myChars)
-    console.log(myCharacteristic)
+    console.log(modeCharacteristic)
 }
 
 // subscribe to changes from the meter:
@@ -112,10 +114,10 @@ function handleData(event) {
 
 async function getCurrentValue() {
     try {
-        if (myCharacteristic === undefined) {
+        if (modeCharacteristic === undefined) {
             await getChar();
         }
-        let value = await myCharacteristic.readValue()
+        let value = await modeCharacteristic.readValue()
         flag = string.decode(value)
         console.log(flag)
     } catch (error) {
@@ -124,18 +126,46 @@ async function getCurrentValue() {
 }
 
 async function writeVal(newFlag) {
-    if (myCharacteristic === undefined) {
+    if (modeCharacteristic === undefined) {
         await getChar();
     }
 
     let commandValue = new Uint8Array(uint8array.encode(newFlag));
 
     try {
-        let some = await myCharacteristic.writeValue(commandValue);
-        console.log(some)
+        let some = await modeCharacteristic.writeValue(commandValue);
+        console.log({some})
     } catch (error) {
         console.log('Argh! ' + error)
     }
+}
+async function writeColour(colour) {
+    if (colourCharacteristic === undefined) {
+        await getChar();
+    }
+
+    let commandValue = new Uint8Array(uint8array.encode(colour));
+
+    try {
+        await modeCharacteristic.writeValue(commandValue);
+    } catch (error) {
+        console.log('Argh! ' + error)
+    }
+    console.log({colour})
+}
+async function writeBrightness(brightness) {
+    if (brightnessCharacteristic === undefined) {
+        await getChar();
+    }
+
+    let commandValue = new Uint8Array(uint8array.encode(brightness));
+
+    try {
+        await modeCharacteristic.writeValue(commandValue);
+    } catch (error) {
+        console.log('Argh! ' + error)
+    }
+    console.log({ brightness })
 }
 
 function bleDisconnect() {

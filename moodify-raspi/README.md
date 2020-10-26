@@ -1,13 +1,18 @@
 **0. Setup the environment**
 
 ```shell
-sudo ./setup.sh
+sudo ./setup-bluez.sh
 ```
 
-**1.To run the bluetooth gatt server just run:**
+**1. RGB LED Setup**:
+```shell
+sudo ./setup-rgb-led.sh
+```
+
+**2.To run the bluetooth gatt server just run:**
 
 ```shell
-sudo ./config.sh
+sudo ./run-gatt-server.sh
 ```
 
 **Done...**
