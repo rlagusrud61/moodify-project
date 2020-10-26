@@ -73,6 +73,8 @@ function compatibilityCtr(){
 
     if(browserName == "Firefox"){
         alert("This browser is not supported by our product");
+    } else if(browserName == "Safari"){
+        alert("This browser is not supported by our product");
     } else if(browserName == "MSIE"){
         alert("This browser is not supported by our product");
     } else if(browserName == "Chrome" && (majorVersion < 56 || (majorVersion < 70 && OSName == "Windows 10"))){
@@ -82,7 +84,6 @@ function compatibilityCtr(){
     else if (browserName == "Opera" && (majorVersion < 43 || (majorVersion < 57 && OSName == "Windows 10") )){
         alert("Please update Opera");}
     }
-
 
 
 function loadIn(){
