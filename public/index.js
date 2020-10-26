@@ -52,9 +52,21 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-    updateChoice();
+//    updateChoice();
+
+     if (myDevice === undefined) {
+        document.getElementById("manualLight").disabled = true;
+        document.getElementById("autoLED").disabled = true;
+        document.getElementById("musicMode").disabled = true;
+     }
+
 }
 
+function enableRadio(){
+    document.getElementById("manualLight").disabled = false;
+    document.getElementById("autoLED").disabled = false;
+    document.getElementById("musicMode").disabled = false;
+}
 
 function updateChoice(){
     colours.style.visibility="hidden";
