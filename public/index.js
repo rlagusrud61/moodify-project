@@ -20,7 +20,7 @@ function loadIn(){
             {
                 component: iro.ui.Box,
                 options: {
-                    width: 75,
+                    width: 100,
                     borderColor: '#ffffff',
                     colour: "#000000"
                 }
@@ -28,13 +28,13 @@ function loadIn(){
             {
                 component: iro.ui.Slider,
                 options: {
-                    width: 75,
+                    width: 100,
                     borderColor: '#000000',
                     sliderType: 'hue'
                 }
             }
         ],
-        layoutDirection: "horizontal"
+        layoutDirection: "vertical"
     });
     colourVal = colourPicker.color.hexString;
 

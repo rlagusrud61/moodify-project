@@ -21,34 +21,30 @@
         <div class="container">
             <h1 class="title">Moodify&trade;</h1>
             <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
-            <div>
-                <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
-                       name="radio" value="manualLight">
-                <label for="manualLight">Manual Light</label>
+            <div class="radio-left">
+                <div>
+                    <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
+                           name="radio" value="manualLight">
+                    <label for="manualLight">Manual Light</label>
+                </div>
+                <div>
+                    <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
+                           name="radio" value="autoLED">
+                    <label for="autoLED">Auto LED</label>
+                </div>
+                <div>
+                    <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
+                           name="radio" value="musicMode">
+                    <label for="musicMode">Music Mode</label>
+                </div>
             </div>
-            <div>
-                <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
-                       name="radio" value="autoLED">
-                <label for="autoLED">Auto LED</label>
-            </div>
-            <div>
-                <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
-                       name="radio" value="musicMode">
-                <label for="musicMode">Music Mode</label>
-            </div>
+            
         </div>
 
         <div class="btn_holder">
             <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
             <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">Connect</button>
             <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
-
-            <div id="disconModal" class="modal">
-                <div class="modalContent">
-                    <span class="close" onclick="closing()">&times;</span>
-                    <p style="color:black;">You have been disconnected</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -75,7 +71,5 @@
         </span>
     </div>
 </div>
-
-
 </body>
 </html>
