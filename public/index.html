@@ -22,32 +22,29 @@
         <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
 
         <div>
-            <a class="accordion w3-bar-item w3-button" style="text-align:center;">Characteristics</a>
-            <div class="panel">
+            <div>
                 <div>
-                    <input type="radio" id="contactChoice1" onclick="updateChoice()"
-                           name="contact" value="email">
-                    <label for="contactChoice1">Colour</label>
+                    <input type="radio" id="colourbutton" onclick="updateChoice()"
+                           name="radio" value="color">
+                    <label for="colourbutton">Colour</label>
                 </div>
                 <div>
-                    <input type="radio" id="contactChoice2" onclick="updateChoice()"
-                           name="contact" value="phone">
-                    <label for="contactChoice2">Brightness</label>
+                    <input type="radio" id="brightness" onclick="updateChoice()"
+                           name="radio" value="bright">
+                    <label for="brightness">Brightness</label>
                 </div>
                 <div>
-                    <input type="radio" id="contactChoice3" onclick="updateChoice()"
-                           name="contact" value="mail">
-                    <label for="contactChoice3">Music Mode</label>
+                    <input type="radio" id="musicmode" onclick="updateChoice()"
+                           name="radio" value="music">
+                    <label for="musicmode">Music Mode</label>
                 </div>
             </div>
         </div>
-
-        <a href="#" class="w3-bar-item w3-button" style="text-align: center">Alarm</a>
     </div>
 
     <div class="btn_holder">
         <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
-        <button onclick="getDevice();"  class="btn disconnect_btn" style="color:white">&nbsp;&nbsp;&nbsp;Connect&nbsp;&nbsp;</button>
+        <button onclick="getDevice();"  class="btn disconnect_btn" style="color:white">Connect</button>
         <button onclick="disconnect();"  class="btn disconnect_btn" style="color:white">Disconnect</button>
 
         <div id="disconModal" class="modal">
@@ -104,7 +101,7 @@
 <!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
 <!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
 <!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
-<!--                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>-->
+               <!-- <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button> -->
             </div>
 
             <!-- Slider for Intensity -->
@@ -120,26 +117,4 @@
 </div>
 
 </body>
-
-
-<!--Somehow it doesn't work if I put this in the index.js file-->
-<script type="text/javascript">
-    var acc = document.getElementsByClassName("accordion");
-
-    for (let i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-                /* Toggle between adding and removing the "active" class,
-                to highlight the button that controls the panel */
-                this.classList.toggle("active");
-
-                /* Toggle between hiding and showing the active panel */
-                var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {panel.style.display = "block";}
-            }
-        );
-    }
-
-</script>
 </html>

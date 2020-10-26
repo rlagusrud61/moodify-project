@@ -5,9 +5,9 @@ let rangeValue = { current: 1.0, last: 1.0};
 function loadIn(){
     colours = document.getElementById("colours");
     slidr = document.getElementById("slidr");
-    opt1 = document.getElementById("contactChoice1");
-    opt2 = document.getElementById("contactChoice2");
-    opt3 = document.getElementById("contactChoice3");
+    opt1 = document.getElementById("colourbutton");
+    opt2 = document.getElementById("brightness");
+    opt3 = document.getElementById("musicmode");
 
     bulb = document.getElementById("bulb")
 
