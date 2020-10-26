@@ -1,6 +1,15 @@
 let colours, slidr, opt1, opt2, opt3, rangeSlider, manualLight, autoLDR, musicMode, music, colourPicker, colourVal, bulb;
 let disconModal = document.getElementById("disconModal");
 let rangeValue = { current: 1.0, last: 1.0};
+var user = detect.parse(navigator.userAgent);
+
+
+window.onload = compatibilityCtr();
+
+function compatibilityCtr(){
+    /*var vet = navigator.appVersion;
+    alert(vet);*/
+}
 
 window.onload = compatibilityCtr();
 
