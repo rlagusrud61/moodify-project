@@ -9,6 +9,18 @@ function compatibilityCtr(){
     var browserName  = navigator.appName;
     var fullVersion  = ''+parseFloat(navigator.appVersion); 
     var majorVersion = parseInt(navigator.appVersion,10);
+    var navUsAg = window.navigator.userAgent;
+
+    var OSName = "Unknown";
+    if (navUsAg.indexOf("Windows NT 10.0")!= -1) {OSName="Windows 10";}
+    else if (navUsAg.indexOf("Windows NT 6.2") != -1) {OSName="Windows 8";}
+    else if (navUsAg.indexOf("Windows NT 6.1") != -1) OSName="Windows 7";
+    else if (navUsAg.indexOf("Windows NT 6.0") != -1) OSName="Windows Vista";
+    else if (navUsAg.indexOf("Windows NT 5.1") != -1) OSName="Windows XP";
+    else if (navUsAg.indexOf("Windows NT 5.0") != -1) OSName="Windows 2000";
+    else if (navUsAg.indexOf("Mac")            != -1) OSName="Mac/iOS";
+    else if (navUsAg.indexOf("X11")            != -1) OSName="UNIX";
+    else if (navUsAg.indexOf("Linux")          != -1) OSName="Linux";
 
 
     // In Opera, the true version is after "Opera" or after "Version"
