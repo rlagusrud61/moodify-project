@@ -71,8 +71,8 @@ function compatibilityCtr(){
     majorVersion = parseInt(navigator.appVersion,10);
     }
 
-    if(browserName == "Chrome" && majorVersion > 56){
-        alert("Update your browser");
+    if(browserName == "Chrome" && (majorVersion < 56 || (majorVersion < 70 && OSName == "Windows 10"))){
+        alert("Please update Google Chrome");
     }
 }
 
