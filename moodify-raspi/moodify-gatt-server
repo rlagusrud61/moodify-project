@@ -5,34 +5,36 @@ import dbus
 from pyble.advertisement import Advertisement
 from pyble.service import Application, Service, Characteristic, Descriptor
 
-from gpioprogramming.LEDControl import LEDControl, decodeString
+from gpioprogramming.MoodifyDriver import MoodifyLogic, terminate
 
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 NOTIFY_TIMEOUT = 1000
-PI_CONTROL = LEDControl()
+PI_CONTROL = MoodifyLogic()
 
 
 class MoodifyAdvertisement(Advertisement):
     def __init__(self, index):
         Advertisement.__init__(self, index, "peripheral")
         self.add_local_name("Moodify")
-        self.add_service_uuid("8af3d338-4048-428f-9bc1-a206d183ac38")
+        self.add_service_uuid("953f08c4-8c8f-46f4-a48b-07c18dfb3447")
         self.include_tx_power = True
 
 
-class ManualLightMode(Service):
-    MAN_LIGHT_SVC_UUID = "953f08c4-8c8f-46f4-a48b-07c18dfb3447"
+class MoodifyControlService(Service):
+    M_CTRL_SVC_UUID = "953f08c4-8c8f-46f4-a48b-07c18dfb3447"
 
     def __init__(self, index):
-        Service.__init__(self, index, self.MAN_LIGHT_SVC_UUID, True)
+        Service.__init__(self, index, self.M_CTRL_SVC_UUID, True)
         self.add_characteristic(ToggleModeCharacteristic(self))
+        self.add_characteristic(ColourCharacteristic(self))
+        self.add_characteristic(BrightnessCharacteristic(self))
 
 
 class ToggleModeCharacteristic(Characteristic):
     TOGGLE_MODE_CHARACTERISTIC_UUID = "58590b45-241a-4230-b020-700ac827a8fb"
 
     def __init__(self, service):
-        self.notifying = True
+        self.notifying = False
         self._value = '000'
 
         Characteristic.__init__(
@@ -60,7 +62,103 @@ class ToggleModeCharacteristic(Characteristic):
         print('WriteValue')
         self._value = ''.join([str(v) for v in value])
         print(self._value)
-        PI_CONTROL.update(self._value)
+        PI_CONTROL.update_mode(self._value)
+        print('New value:', self._value)
+        if self.notifying:
+            self.notify()
+
+    def StopNotify(self):
+        print('StopNotify')
+        self.notifying = False
+
+    def ReadValue(self, options):
+        print('ReadValue')
+        value = self.get_value()
+        print('value to return:', value)
+        return value
+
+
+class ColourCharacteristic(Characteristic):
+    COLOUR_CHARACTERISTIC_UUID = "2f59ede8-dd70-4748-94a3-3ca4f6663a42"
+
+    def __init__(self, service):
+        self.notifying = False
+        self._value = "0,0,0"
+
+        Characteristic.__init__(
+            self, self.COLOUR_CHARACTERISTIC_UUID,
+            ["notify", "read", "write"], service)
+        self.add_descriptor(ColourCharacteristicDescriptor(self))
+
+    def get_value(self):
+        return dbus.ByteArray(self._value.encode())
+
+    def notify(self):
+        self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
+        print('notified')
+
+    def StartNotify(self):
+        print('StartNotify')
+        if self.notifying:
+            return
+
+        self.notifying = True
+
+        self.notify()
+
+    def WriteValue(self, value, options):
+        print('WriteValue')
+        self._value = ''.join([str(v) for v in value])
+        print(self._value)
+        PI_CONTROL.update_colour(self._value)
+        print('New value:', self._value)
+        if self.notifying:
+            self.notify()
+
+    def StopNotify(self):
+        print('StopNotify')
+        self.notifying = False
+
+    def ReadValue(self, options):
+        print('ReadValue')
+        value = self.get_value()
+        print('value to return:', value)
+        return value
+
+
+class BrightnessCharacteristic(Characteristic):
+    BRIGHTNESS_CHARACTERISTIC_UUID = "c0cf5135-aae3-4a8e-ad4c-e33614753037"
+
+    def __init__(self, service):
+        self.notifying = False
+        self._value = "1"
+
+        Characteristic.__init__(
+            self, self.BRIGHTNESS_CHARACTERISTIC_UUID,
+            ["notify", "read", "write"], service)
+        self.add_descriptor(BrightnessCharacteristicDescriptor(self))
+
+    def get_value(self):
+        return dbus.ByteArray(self._value.encode())
+
+    def notify(self):
+        self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
+        print('notified')
+
+    def StartNotify(self):
+        print('StartNotify')
+        if self.notifying:
+            return
+
+        self.notifying = True
+
+        self.notify()
+
+    def WriteValue(self, value, options):
+        print('WriteValue')
+        self._value = ''.join([str(v) for v in value])
+        print(self._value)
+        PI_CONTROL.update_brightness(self._value)
         print('New value:', self._value)
         if self.notifying:
             self.notify()
@@ -78,7 +176,7 @@ class ToggleModeCharacteristic(Characteristic):
 
 class ToggleModeCharacteristicDescriptor(Descriptor):
     TOGGLE_MODE_CHAR_UUID = "57a1524f-aab4-4162-911a-17d368696b15"
-    TOGGLE_MODE_DESCRIPTOR_VALUE = "This is used to set Mode"
+    TOGGLE_MODE_DESCRIPTOR_VALUE = "This is used to set the Mode of the Moodify"
 
     def __init__(self, characteristic):
         Descriptor.__init__(
@@ -96,9 +194,49 @@ class ToggleModeCharacteristicDescriptor(Descriptor):
         return value
 
 
+class ColourCharacteristicDescriptor(Descriptor):
+    COLOUR_CHAR_UUID = "d7663fe0-1b13-4f3a-bdb4-cad3776c1624"
+    COLOUR_DESCRIPTOR_VALUE = "This is used to set the colour in manual light/auto LDR mode"
+
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, self.COLOUR_CHAR_UUID,
+            ["read"],
+            characteristic)
+
+    def ReadValue(self, options):
+        value = []
+        desc = self.COLOUR_DESCRIPTOR_VALUE
+
+        for c in desc:
+            value.append(dbus.Byte(c.encode()))
+
+        return value
+
+
+class BrightnessCharacteristicDescriptor(Descriptor):
+    BRIGHTNESS_CHAR_UUID = "ab8ffd08-70a0-4128-9d59-465b9159c33f"
+    BRIGHTNESS_DESCRIPTOR_VALUE = "This is used to set the brightness in manual light/auto LDR mode"
+
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, self.BRIGHTNESS_CHAR_UUID,
+            ["read"],
+            characteristic)
+
+    def ReadValue(self, options):
+        value = []
+        desc = self.BRIGHTNESS_DESCRIPTOR_VALUE
+
+        for c in desc:
+            value.append(dbus.Byte(c.encode()))
+
+        return value
+
+
 if __name__ == '__main__':
     app = Application()
-    app.add_service(ManualLightMode(0))
+    app.add_service(MoodifyControlService(0))
     app.register()
 
     adv = MoodifyAdvertisement(0)
@@ -107,5 +245,5 @@ if __name__ == '__main__':
     try:
         app.run()
     except KeyboardInterrupt:
-        PI_CONTROL.terminate()
+        terminate()
         app.quit()
