@@ -14,14 +14,14 @@
 
 <body style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
 
-<div class="w3-sidebar w3-bar-block w3-card" style="width:130px; background-color: #211B28;">
+<div class="w3-sidebar w3-bar-block w3-card" style="width:130px;background-color:#211B28;">
     <h5 class="w3-bar-item">Menu</h5>
     <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Left1')">Modes</button>
     <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Left2')">Colour</button>
 </div>
 
 <div style="margin-left:130px; background-color: #674E7F">
-    <div id="Left1" class="w3-container city w3-animate-left" style="display:none; width: 30%">
+    <div id="Left1" class="w3-container city w3-animate-left" style="display:none;width: 30%;height: 100%">
         <form class="w3-container w3-card-4">
             <p>
                 <input class="w3-radio" type="radio" name="mode" value="manual">
@@ -34,63 +34,7 @@
                 <label>Music Mode</label></p>
         </form>
     </div>
-
-    <div id="Left2" class="w3-container city w3-animate-left" style="display:none">
-         <div class="container top-section">
-        <!--This is the light on the standard page-->
-        <div class="circle flex">
-            <span id="bulb" class="light"></span>
-        </div>
-
-        <!-- Toggle Switch  -->
-        <div class="w3-row">
-            <label>Manual Light</label>
-            <label>Auto LDR</label>
-            <label>Music Mode</label>
-        </div>
-        <div class="w3-row">
-            <label class="switch">
-                <input type="checkbox" id="ManualLight" onclick="sendModeUpdate(0);">
-                <span class="slider round"></span>
-                <div class="text"></div>
-            </label>
-            <label class="switch">
-                <input type="checkbox" id="LightIntensityMode" onclick="sendModeUpdate(1);">
-                <span class="slider round"></span>
-                <div class="text"></div>
-            </label>
-            <label class="switch">
-                <input type="checkbox" id="MusicMode" onclick="sendModeUpdate(2);">
-                <span class="slider round"></span>
-                <div class="text"></div>
-            </label>
-        </div>
-
-        <!-- Color palette -->
-        <span class="custom-control custom-switch">
-            <div id="colours">
-
-
-
-<!--                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>-->
-                <!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
-                <!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
-                <!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
-                <!--                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>-->
-            </div>
-
-            <!-- Slider for Intensity -->
-            <div id="slidr" class="slidecontainer">
-                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">
-                <div id="demo"></div>
-                <!-- This appears behind the slider  <label>Intensity</label> -->
-            </div>
-            <div id="musicToggle">
-
-            </div>
-        </span>
-    </div>
-    </div>
+</div>
 
 </div>
 
@@ -144,63 +88,63 @@
 
 
 <!-- Container for the light and toggle button and other features -->
-<!--<div id="main">-->
-<!--    &lt;!&ndash; Glowing light &ndash;&gt;-->
-<!--    <div class="container top-section">-->
-<!--        &lt;!&ndash;This is the light on the standard page&ndash;&gt;-->
-<!--        <div class="circle flex">-->
-<!--            <span id="bulb" class="light"></span>-->
-<!--        </div>-->
+<div id="main">
+    <!-- Glowing light -->
+    <div class="container top-section">
+        <!--This is the light on the standard page-->
+        <div class="circle flex">
+            <span id="bulb" class="light"></span>
+        </div>
 
-<!--        &lt;!&ndash; Toggle Switch  &ndash;&gt;-->
-<!--        <div class="w3-row">-->
-<!--            <label>Manual Light</label>-->
-<!--            <label>Auto LDR</label>-->
-<!--            <label>Music Mode</label>-->
-<!--        </div>-->
-<!--        <div class="w3-row">-->
-<!--            <label class="switch">-->
-<!--                <input type="checkbox" id="ManualLight" onclick="sendModeUpdate(0);">-->
-<!--                <span class="slider round"></span>-->
-<!--                <div class="text"></div>-->
-<!--            </label>-->
-<!--            <label class="switch">-->
-<!--                <input type="checkbox" id="LightIntensityMode" onclick="sendModeUpdate(1);">-->
-<!--                <span class="slider round"></span>-->
-<!--                <div class="text"></div>-->
-<!--            </label>-->
-<!--            <label class="switch">-->
-<!--                <input type="checkbox" id="MusicMode" onclick="sendModeUpdate(2);">-->
-<!--                <span class="slider round"></span>-->
-<!--                <div class="text"></div>-->
-<!--            </label>-->
-<!--        </div>-->
+        <!-- Toggle Switch  -->
+        <div class="w3-row">
+            <label>Manual Light</label>
+            <label>Auto LDR</label>
+            <label>Music Mode</label>
+        </div>
+        <div class="w3-row">
+            <label class="switch">
+                <input type="checkbox" id="ManualLight" onclick="sendModeUpdate(0);">
+                <span class="slider round"></span>
+                <div class="text"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="LightIntensityMode" onclick="sendModeUpdate(1);">
+                <span class="slider round"></span>
+                <div class="text"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="MusicMode" onclick="sendModeUpdate(2);">
+                <span class="slider round"></span>
+                <div class="text"></div>
+            </label>
+        </div>
 
-<!--        &lt;!&ndash; Color palette &ndash;&gt;-->
-<!--        <span class="custom-control custom-switch">-->
-<!--            <div id="colours">-->
+        <!-- Color palette -->
+        <span class="custom-control custom-switch">
+            <div id="colours">
 
 
 
-<!--&lt;!&ndash;                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>&ndash;&gt;-->
-<!--            </div>-->
+<!--                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>-->
+                <!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
+                <!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
+                <!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
+                <!--                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>-->
+            </div>
 
-<!--            &lt;!&ndash; Slider for Intensity &ndash;&gt;-->
-<!--            <div id="slidr" class="slidecontainer">-->
-<!--                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">-->
-<!--                <div id="demo"></div>-->
-<!--                &lt;!&ndash; This appears behind the slider  <label>Intensity</label> &ndash;&gt;-->
-<!--            </div>-->
-<!--            <div id="musicToggle">-->
+            <!-- Slider for Intensity -->
+            <div id="slidr" class="slidecontainer">
+                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">
+                <div id="demo"></div>
+                <!-- This appears behind the slider  <label>Intensity</label> -->
+            </div>
+            <div id="musicToggle">
 
-<!--            </div>-->
-<!--        </span>-->
-<!--    </div>-->
-<!--</div>-->
+            </div>
+        </span>
+    </div>
+</div>
 <footer id="footer">
     Moodify&trade;, the future we all wish we were living.
 </footer>
@@ -209,22 +153,7 @@
 
 <!--Somehow it doesn't work if I put this in the index.js file-->
 <script type="text/javascript">
-<!--    var acc = document.getElementsByClassName("accordion");-->
 
-<!--    for (let i = 0; i < acc.length; i++) {-->
-<!--        acc[i].addEventListener("click", function() {-->
-<!--                /* Toggle between adding and removing the "active" class,-->
-<!--                to highlight the button that controls the panel */-->
-<!--                this.classList.toggle("active");-->
-
-<!--                /* Toggle between hiding and showing the active panel */-->
-<!--                var panel = this.nextElementSibling;-->
-<!--                if (panel.style.display === "block") {-->
-<!--                    panel.style.display = "none";-->
-<!--                } else {panel.style.display = "block";}-->
-<!--            }-->
-<!--        );-->
-<!--    }-->
 function openLink(evt, animName) {
   var i, x, tablinks;
   x = document.getElementsByClassName("city");
@@ -234,6 +163,7 @@ function openLink(evt, animName) {
   tablinks = document.getElementsByClassName("tablink");
   document.getElementById(animName).style.display = "block";
 }
+
 
 </script>
 
