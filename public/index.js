@@ -1,6 +1,10 @@
-let colours, slidr, opt1, opt2, opt3, rangeSlider, manualLight, autoLDR, musicMode, music, colourPicker, colourVal, bulb;
+let colours, slidr, opt1, opt2, opt3, rangeSlider, music, colourPicker, colourVal, bulb;
 let disconModal = document.getElementById("disconModal");
 let rangeValue = { current: 1.0, last: 1.0};
+
+let manualLight = document.getElementById("manualLight");
+let autoLED = document.getElementById("autoLED");
+let musicMode = document.getElementById("musicMode");
 
 function loadIn(){
     colours = document.getElementById("colours");
@@ -52,7 +56,7 @@ function loadIn(){
 
     colourPicker.on('color:change', onColorChange);
 
-    updateChoice();
+//    updateChoice();
 
      if (!myDevice.gatt.connected) {
         manualLight.disabled = true;
@@ -91,18 +95,18 @@ function onColorChange(color) {
 function sendModeUpdate(flag) {
     let text;
     if (manualLight.checked && flag === 0) {
-        autoLDR.checked = false;
+        autoLED.checked = false;
         musicMode.checked = false;
         text = "100"
-    } else if (autoLDR.checked && flag === 1) {
+    } else if (autoLED.checked && flag === 1) {
         manualLight.checked = false;
         musicMode.checked = false;
         text = "010"
     } else if (musicMode.checked && flag === 2) {
         manualLight.checked = false;
-        autoLDR.checked = false;
+        autoLED.checked = false;
         text = "001"
-    } else if (!(autoLDR.checked || manualLight.checked || musicMode.checked)) {
+    } else if (!(autoLED.checked || manualLight.checked || musicMode.checked)) {
         text = "000"
     }
     console.log({mode: text})

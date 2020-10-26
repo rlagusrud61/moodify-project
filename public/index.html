@@ -11,16 +11,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
 </head>
 
-<body style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
+<div style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
 
-<!-- Side Navigation bar -->
-<div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
+    <!-- Side Navigation bar -->
+    <div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
 
-    <!-- Elements of Side Nav bar -->
-    <div class="container">
-        <h1 class="title">Moodify&trade;</h1>
-        <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
-        <div>
+        <!-- Elements of Side Nav bar -->
+        <div class="container">
+            <h1 class="title">Moodify&trade;</h1>
+            <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
             <div>
                 <div>
                     <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
@@ -39,7 +38,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <div class="btn_holder">
         <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
