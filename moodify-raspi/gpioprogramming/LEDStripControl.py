@@ -78,14 +78,14 @@ class StripControl:
             self.__e.clear()
 	
 	def soundAnalyze(stream)
-		data = stream.read(CHUNK, exception_on_overflow=False)
-		waveData = wave.struct.unpack("%dh"%(CHUNK), data)
+		data = stream.read(8192, exception_on_overflow=False)
+		waveData = wave.struct.unpack("%dh"%(8192), data)
 		npArrayData = np.array(waveData)
 		volume = npArrayData[1:].argmax() + 1
 		fftData=np.abs(np.fft.rfft(npArrayData))
 		which = fftData[1:].argmax() + 1
-		thefreq = which*RATE/CHUNK
-		return[volume, thefreq]
+		thefreq = which*44100/8192
+		return[npArrayData[volume], thefreq]
 	
 	def wavelength_to_rgb(wavelength, gamma = 0.8)
 		wavelength = float(wavelength)
