@@ -38,9 +38,14 @@
                     <label for="musicMode">Music Mode</label>
                 </div>
             </div>
-            
-        </div>
 
+        </div>
+        <div>
+                <label class="switch">
+              <input type="checkbox" onclick="lightOff()" id = "lightSwitch">
+              <span class="slider round"></span>
+            </label>
+        </div>
         <div class="btn_holder">
             <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
             <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">&nbsp;Connect&nbsp;</button>

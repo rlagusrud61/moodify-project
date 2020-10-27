@@ -6,6 +6,8 @@ let manualLight = document.getElementById("manualLight");
 let autoLED = document.getElementById("autoLED");
 let musicMode = document.getElementById("musicMode");
 
+let currentMode= "000";
+
 function loadIn(){
     compatibilityCtr();
     colours = document.getElementById("colours");
@@ -58,13 +60,23 @@ function loadIn(){
     document.getElementById("manualLight").disabled = true;
     document.getElementById("autoLED").disabled = true;
     document.getElementById("musicMode").disabled = true;
+    document.getElementById("lightSwitch").disabled = true;
+}
 
+async function lightOff(){
+    if (!document.getElementById("lightSwitch").checked){
+        await writeVal("000"); // turns manual LED on and
+    } else {
+        await writeVal(currentMode);
+    }
 }
 
 function enableRadioButtons(){
     document.getElementById("manualLight").disabled = false;
     document.getElementById("autoLED").disabled = false;
     document.getElementById("musicMode").disabled = false;
+    document.getElementById("lightSwitch").disabled = false;
+    document.getElementById("lightSwitch").checked = true;
 }
 
 function updateChoice(){
@@ -101,6 +113,7 @@ window.onclick = function(event) {
 function sendModeUpdate(flag) {
     let text;
     updateChoice();
+    document.getElementById("lightSwitch").checked=true;
     if (document.getElementById("manualLight").checked && flag === 0) {
         document.getElementById("autoLED").checked = false;
         document.getElementById("musicMode").checked = false;
@@ -117,6 +130,7 @@ function sendModeUpdate(flag) {
         text = "000"
     }
     console.log({mode: text})
+    currentMode = text;
     writeVal(text)
 }
 
