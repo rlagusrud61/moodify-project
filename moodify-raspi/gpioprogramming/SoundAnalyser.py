@@ -6,6 +6,7 @@ from scipy.signal import butter, sosfilt
 
 def wavelength_to_rgb(wavelength, gamma=0.8):
     wavelength = float(wavelength)
+    wavelength = wavelength/3 + 340
     if 380 <= wavelength <= 440:
         attenuation = 0.3 + 0.7 * (wavelength - 380) / (440 - 380)
         R = ((-(wavelength - 440) / (440 - 380)) * attenuation) ** gamma
@@ -30,12 +31,9 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
     elif 645 <= wavelength <= 750:
         attenuation = 0.3 + 0.7 * (750 - wavelength) / (750 - 645)
         R = (1.0 * attenuation) ** gamma
-        G = 0.0
-        B = 0.0
+        G = B = 0.0
     else:
-        R = 0.0
-        G = 0.0
-        B = 0.0
+        R = G = B = 0.0
     R *= 255
     G *= 255
     B *= 255
@@ -45,8 +43,8 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
 class SignalAnalyser:
 
     def __init__(self):
-        self.lowcut = 150
-        self.highcut = 850
+        self.lowcut = 80
+        self.highcut = 920
         self.fs = 44100
         self.order = 10
         self.CHUNK = 4 * 4096
@@ -84,8 +82,9 @@ class SignalAnalyser:
         self.stream.stop_stream()
         _, _, peak_req, amp = self.analyse_data(data)
         adjustedAMP = 0
+        print(amp)
         if amp > 2:
-            adjustedAMP = max(min(amp/30, 1), 0.1)
+            adjustedAMP = max(min(amp/20, 1), 0.1)
         return peak_req, adjustedAMP
 
     def terminate(self):
@@ -101,4 +100,4 @@ if __name__ == '__main__':
         thisFreq, thisAmp = newAnalysis.get_next_pair()
         average = thisFreq * weight + (1 - weight) * lastFreq
         lastFreq = thisFreq
-        print((average, thisAmp))
+        print((round(average), thisAmp, wavelength_to_rgb(average)))
