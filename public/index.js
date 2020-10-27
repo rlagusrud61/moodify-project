@@ -153,6 +153,13 @@ function disconnect(){
     document.getElementById("manualLight").disabled = true;
     document.getElementById("autoLED").disabled = true;
     document.getElementById("musicMode").disabled = true;
+    document.getElementById("lightSwitch").checked = false;
+    document.getElementById("lightSwitch").disabled = true;
+    colours.style.visibility="hidden";
+    slidr.style.visibility="hidden";
+    music.style.visibility="hidden";
+    document.getElementById("bulb").style.backgroundColor = "rgba(39, 38, 38, 0.342)";
+    document.getElementById("bulb").style.boxShadow = "0 0 15px 0 black";
     alert("You are now disconnected.");
 }
 
