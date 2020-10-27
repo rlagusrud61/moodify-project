@@ -82,6 +82,7 @@ class SignalAnalyser:
         self.stream.stop_stream()
         _, _, peak_req, amp = self.analyse_data(data)
         adjustedAMP = 0
+        print(amp)
         if amp > 2:
             adjustedAMP = max(min(amp/20, 1), 0.1)
         return peak_req, adjustedAMP
