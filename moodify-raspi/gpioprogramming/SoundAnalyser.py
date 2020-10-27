@@ -81,7 +81,10 @@ class SignalAnalyser:
         data = np.frombuffer(self.stream.read(self.CHUNK), dtype=np.int16)
         self.stream.stop_stream()
         _, _, peak_req, amp = self.analyse_data(data)
-        return peak_req, min(amp / 150, 1)
+        adjustedAMP = 0
+        if amp > 2:
+            adjustedAMP = max(min(amp/30, 1), 0.1)
+        return peak_req, adjustedAMP
 
     def terminate(self):
         self.stream.close()
