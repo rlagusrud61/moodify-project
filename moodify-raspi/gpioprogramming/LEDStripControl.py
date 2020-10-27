@@ -6,7 +6,6 @@ import neopixel
 from SoundAnalyser import SignalAnalyser, wavelength_to_rgb
 
 OFF = (0, 0, 0)
-CHUNK = 2048
 
 
 def brightnessAdjustedColour(colour, brightness):
