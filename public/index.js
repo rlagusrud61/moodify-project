@@ -23,38 +23,38 @@ function compatibilityCtr(){
     else if (navUsAg.indexOf("Linux")          != -1) OSName="Linux";
 
 
-    // In Opera, the true version is after "Opera" or after "Version"
+    // Getting the relevant part
     if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
     browserName = "Opera";
     fullV = nAgt.substring(verOffset+6);
     if ((verOffset=nAgt.indexOf("Version"))!=-1) 
     fullV = nAgt.substring(verOffset+8);
     }
-    // In MSIE, the true version is after "MSIE" in userAgent
+    // Getting the relevant part
     else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
     browserName = "MSIE";
     }
-    // In Chrome, the true version is after "Chrome" 
+    // Getting the relevant part 
     else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
     browserName = "Chrome";
     fullV = nAgt.substring(verOffset+7);
     }
-    // In Safari, the true version is after "Safari" or after "Version" 
+    // Getting the relevant part
     else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
     browserName = "Safari";
     }
-    // In Firefox, the true version is after "Firefox" 
+    // Getting the relevant part
     else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
     browserName = "Firefox";
     }
-    // In most other browsers, "name/version" is at the end of userAgent 
+    // Getting the relevant part
     else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
             (verOffset=nAgt.lastIndexOf('/')) ) 
     {
     browserName = nAgt.substring(nameOffset,verOffset);
     fullV = nAgt.substring(verOffset+1);
     }
-    // trim the fullV string at semicolon/space if present
+    // We need to cut off the string if/when there is a semicolon/space
     if ((ix=fullV.indexOf(";"))!=-1)
     fullV=fullV.substring(0,ix);
     if ((ix=fullV.indexOf(" "))!=-1)
