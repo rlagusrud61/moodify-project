@@ -21,7 +21,7 @@ function loadIn(){
             {
                 component: iro.ui.Box,
                 options: {
-                    width: 100,
+                    width: 150,
                     borderColor: '#ffffff',
                     colour: "#000000"
                 }
@@ -29,7 +29,7 @@ function loadIn(){
             {
                 component: iro.ui.Slider,
                 options: {
-                    width: 100,
+                    width: 150,
                     borderColor: '#000000',
                     sliderType: 'hue'
                 }
@@ -39,15 +39,10 @@ function loadIn(){
     });
     colourVal = colourPicker.color.hexString;
 
-    music = document.getElementById("musicToggle")
-
     rangeSlider = document.getElementById("range_slider");
-    // rangeSlider.addEventListener("mousedown", function() {
-    //     rangeSlider.addEventListener("mousemove", brightnessListener);
-    // });
+
 
     rangeSlider.addEventListener("mouseup", function () {
-        // rangeSlider.removeEventListener("mousemove", brightnessListener)
         brightnessListener()
     });
 
@@ -70,11 +65,8 @@ function enableRadioButtons(){
 function updateChoice(){
     colours.style.visibility="hidden";
     slidr.style.visibility="hidden";
-    music.style.visibility="hidden";
-
-    if(document.getElementById("manualLight").checked){colours.style.visibility="visible"}
-    if(document.getElementById("autoLED").checked){slidr.style.visibility="visible"}
-    if(document.getElementById("musicMode").checked){music.style.visibility="visible"}
+    if(document.getElementById("manualLight").checked){colours.style.visibility="visible"; slidr.style.visibility="visible"; colours.style.left=null; colours.style.position=null;}
+    if(document.getElementById("autoLED").checked){colours.style.visibility="visible";colours.style.left="150px"; colours.style.position="relative";}
 }
 
 function onColorChange(color) {
@@ -84,17 +76,6 @@ function onColorChange(color) {
     bulb.style.background = color.hexString
     bulb.style.boxShadow = `0px 0px 15px 0px ${color.hexString}`
     sendColourUpdate(stringCode);
-}
-
-let span = document.getElementsByClassName("close")[0];
-
-function modalPopUp() {disconModal.style.display = "block";}
-
-function closing(){disconModal.style.display = "none";}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target === disconModal){modal.style.display = "none";}
 }
 
 // Debugger function for Master Puru <3
