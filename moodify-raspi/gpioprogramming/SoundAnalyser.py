@@ -53,6 +53,7 @@ class SignalAnalyser:
         self.p = pyaudio.PyAudio()  # start the PyAudio class
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=self.fs, input=True,
                                   frames_per_buffer=self.CHUNK)  # uses default input device
+        self.stream.stop_stream()
 
     def __butter_bandpass(self):
         nyq = 0.5 * self.fs
