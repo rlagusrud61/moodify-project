@@ -13,7 +13,12 @@ PI_CONTROL = MoodifyLogic()
 
 
 class MoodifyAdvertisement(Advertisement):
+
     def __init__(self, index):
+        """
+        Initialises the Advertisement
+        :param index: The Index of the Advertisement when displayed by the BLE device.
+        """
         Advertisement.__init__(self, index, "peripheral")
         self.add_local_name("Moodify")
         self.add_service_uuid("953f08c4-8c8f-46f4-a48b-07c18dfb3447")
@@ -24,6 +29,10 @@ class MoodifyControlService(Service):
     M_CTRL_SVC_UUID = "953f08c4-8c8f-46f4-a48b-07c18dfb3447"
 
     def __init__(self, index):
+        """
+        The Moodify Control Service class which is the container of the services it provides.
+        :param index: The index of the Service in the list of services when shown in the Client.
+        """
         Service.__init__(self, index, self.M_CTRL_SVC_UUID, True)
         self.add_characteristic(ToggleModeCharacteristic(self))
         self.add_characteristic(ColourCharacteristic(self))
@@ -34,6 +43,10 @@ class ToggleModeCharacteristic(Characteristic):
     TOGGLE_MODE_CHARACTERISTIC_UUID = "58590b45-241a-4230-b020-700ac827a8fb"
 
     def __init__(self, service):
+        """
+        The Toggle Mode Characteristic that controls the Moodify's current mode.
+        :param service: The Service to which it belongs to.
+        """
         self.notifying = False
         self._value = '000'
 
@@ -43,13 +56,25 @@ class ToggleModeCharacteristic(Characteristic):
         self.add_descriptor(ToggleModeCharacteristicDescriptor(self))
 
     def get_value(self):
+        """
+        Returns the current value of the Characteristic.
+        :return: Byte Array
+        """
         return dbus.ByteArray(self._value.encode())
 
     def notify(self):
+        """
+        Sends an update back to the Client.
+        :return: void
+        """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
         print('notified')
 
     def StartNotify(self):
+        """
+        Starts the notification process, if not already notifying.
+        :return:
+        """
         print('StartNotify')
         if self.notifying:
             return
@@ -59,22 +84,35 @@ class ToggleModeCharacteristic(Characteristic):
         self.notify()
 
     def WriteValue(self, value, options):
-        print('WriteValue')
+        """
+        Updates the current value of the characteristic.
+        :param value: The new Value to add
+        :type Byte Array
+
+        :param options:
+        :return:
+        """
         self._value = ''.join([str(v) for v in value])
-        print(self._value)
+        print('New value received for Toggle Mode Char:', self._value)
         PI_CONTROL.update_mode(self._value)
-        print('New value:', self._value)
         if self.notifying:
             self.notify()
 
     def StopNotify(self):
-        print('StopNotify')
+        """
+        Stops sending notifying to the device.
+        :return:
+        """
         self.notifying = False
 
     def ReadValue(self, options):
-        print('ReadValue')
+        """
+        Sends the current value of the Toggle Mode Characteristic to the Client.
+        :param options:
+        :return:
+        """
         value = self.get_value()
-        print('value to return:', value)
+        print('Toggle Mode Value to return: ', value)
         return value
 
 
@@ -82,6 +120,12 @@ class ColourCharacteristic(Characteristic):
     COLOUR_CHARACTERISTIC_UUID = "2f59ede8-dd70-4748-94a3-3ca4f6663a42"
 
     def __init__(self, service):
+        """
+        The Toggle Mode Characteristic that controls the Moodify's current colour.
+        The initial value is '0,0,0'
+
+        :param service: The Service to which it belongs to.
+        """
         self.notifying = False
         self._value = "0,0,0"
 
@@ -91,13 +135,25 @@ class ColourCharacteristic(Characteristic):
         self.add_descriptor(ColourCharacteristicDescriptor(self))
 
     def get_value(self):
+        """
+        Returns the current value of the Characteristic.
+        :return: Byte Array
+        """
         return dbus.ByteArray(self._value.encode())
 
     def notify(self):
+        """
+        Sends an update back to the Client.
+        :return: void
+        """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
         print('notified')
 
     def StartNotify(self):
+        """
+        Starts the notification process, if not already notifying.
+        :return:
+        """
         print('StartNotify')
         if self.notifying:
             return
@@ -107,6 +163,14 @@ class ColourCharacteristic(Characteristic):
         self.notify()
 
     def WriteValue(self, value, options):
+        """
+        Updates the current value of the characteristic.
+        :param value: The new Value to add
+        :type Byte Array
+
+        :param options:
+        :return:
+        """
         print('WriteValue')
         self._value = ''.join([str(v) for v in value])
         print(self._value)
@@ -116,10 +180,19 @@ class ColourCharacteristic(Characteristic):
             self.notify()
 
     def StopNotify(self):
+        """
+        Stops sending notifying to the device.
+        :return:
+        """
         print('StopNotify')
         self.notifying = False
 
     def ReadValue(self, options):
+        """
+        Sends the current value of the Toggle Mode Characteristic to the Client.
+        :param options:
+        :return:
+        """
         print('ReadValue')
         value = self.get_value()
         print('value to return:', value)
@@ -130,8 +203,12 @@ class BrightnessCharacteristic(Characteristic):
     BRIGHTNESS_CHARACTERISTIC_UUID = "c0cf5135-aae3-4a8e-ad4c-e33614753037"
 
     def __init__(self, service):
+        """
+        The Toggle Mode Characteristic that controls the Moodify's current brightness.
+        :param service: The Service to which it belongs to.
+        """
         self.notifying = False
-        self._value = "1"
+        self._value = "0.2"
 
         Characteristic.__init__(
             self, self.BRIGHTNESS_CHARACTERISTIC_UUID,
@@ -139,13 +216,25 @@ class BrightnessCharacteristic(Characteristic):
         self.add_descriptor(BrightnessCharacteristicDescriptor(self))
 
     def get_value(self):
+        """
+        Returns the current value of the Characteristic.
+        :return: Byte Array
+        """
         return dbus.ByteArray(self._value.encode())
 
     def notify(self):
+        """
+        Sends an update back to the Client.
+        :return: void
+        """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
         print('notified')
 
     def StartNotify(self):
+        """
+        Starts the notification process, if not already notifying.
+        :return:
+        """
         print('StartNotify')
         if self.notifying:
             return
@@ -155,6 +244,14 @@ class BrightnessCharacteristic(Characteristic):
         self.notify()
 
     def WriteValue(self, value, options):
+        """
+        Updates the current value of the characteristic.
+        :param value: The new Value to add
+        :type Byte Array
+
+        :param options:
+        :return:
+        """
         print('WriteValue')
         self._value = ''.join([str(v) for v in value])
         print(self._value)
@@ -164,10 +261,19 @@ class BrightnessCharacteristic(Characteristic):
             self.notify()
 
     def StopNotify(self):
+        """
+        Stops sending notifying to the device.
+        :return:
+        """
         print('StopNotify')
         self.notifying = False
 
     def ReadValue(self, options):
+        """
+        Sends the current value of the Toggle Mode Characteristic to the Client.
+        :param options:
+        :return:
+        """
         print('ReadValue')
         value = self.get_value()
         print('value to return:', value)

@@ -9,45 +9,108 @@ SEP = ","
 TRUE = "1"
 
 
+class LengthError(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class WrongValueReceived(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class InvalidTypeError(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class TooManyModesSelectedException(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
 def decodeString(code):
-    print(f"Code in function decode:{code}")
+    """
+    Decodes a string text
+    :param code: the string code.
+    :type code:str
+
+    :return: the boolean values of the mode
+    :rtype: bool, bool, bool
+    """
+    if len(code) != 3:
+        raise LengthError("Not a valid length Mode Code Received")
+    try:
+        for char in code:
+            if int(char) != 0 or int(char) != 1:
+                raise WrongValueReceived("Not a valid Mode Value")
+    except ValueError:
+        raise InvalidTypeError("Can not accept non numeric characters")
+            
     manualLED, autoLDR, musicMode = code[0] == TRUE, code[1] == TRUE, code[2] == TRUE
     print(f"manualLED: {manualLED}, autoLDR: {autoLDR}, musicMode:{musicMode}")
-    return manualLED, autoLDR, musicMode
+    if manualLED ^ autoLDR ^ musicMode:
+        return manualLED, autoLDR, musicMode
+    else:
+        raise TooManyModesSelectedException()
 
 
 def decodeColour(colour):
-    print(f"Colour: {colour}")
-    return tuple(int(val) for val in colour.split(sep=SEP))
+    """
+    Decodes the colour string to a proper value and returns a tuple of the colour/
+    :param colour: The colour String to decode
+    :type colour: str
+    :return: : Decoded tuple
+    :rtype: tuple()
+    """
+    print(f"New Colour: {colour}")
+    try:
+        newColor = tuple(int(val) for val in colour.split(sep=SEP))
+        for hex in newColor:
+            if 0 >= hex >= 255:
+                raise WrongValueReceived("Not a valid color Hex Value")
+    except ValueError:
+        raise InvalidTypeError("Can not accept non numeric characters")
 
 
 def decodeBrightness(brightness):
+    """
+    Returns the decoded brightness from the string
+    :param brightness: brightness in string format
+    :return: :the float value of the brightness
+    :rtype: float
+    """
     print(f"Brightness: {brightness}")
-    return float(brightness)
-
-
-def terminate():
-    GPIO.cleanup()
+    try :
+        value = float(brightness)
+        if 0 <= value <= 1:
+            return value
+        else:
+            raise WrongValueReceived("Brightness can only be between 0 and 1")
+    except ValueError:
+        raise InvalidTypeError("Can not accept non numeric value")
 
 
 class MoodifyLogic:
-    def __init__(self):
-        self.manualLED = False
-        self.autoLDR = False
-        self.musicMode = False
+    def __init__(self, manualLED=False, autoLDR=False, musicMode=False, delayTime=0.1, brightness=0.2, numberOfPixels=10):
+        self.__manualLED = manualLED
+        self.__autoLDR = autoLDR
+        self.__musicMode = musicMode
 
-        self.delayTime = 0.1
-        self.value = 0  # this variable will be used to store the ldr value
-        self.ldr = 7  # ldr is connected with pin number 7
-        self.led = 11  # led is connected with pin number 11
+        self.__delayTime = delayTime
+        self.__value = 0  # this variable will be used to store the ldr value
+        self.__ldr = 7  # ldr is connected with pin number 7
+        self.__led = 11  # led is connected with pin number 11
 
-        self.brightness = 0.2
-        self.numberOfPixels = 5
+        self.__brightness = brightness
+        self.__numberOfPixels = numberOfPixels
 
-        self.__e = threading.Event()
-        self.colourControl = StripControl(self.__e)
+        self.__musicEvent = threading.Event()
+        self.__updateEvent = threading.Event()
+        self.__LDREvent = threading.Event()
+        self.__colourControl = StripControl(self.__musicEvent, self.__LDREvent, self.__numberOfPixels, self.__brightness)
 
-        self._lock = threading.Lock()
+        self.__lock = threading.Lock()
         self.__start()
 
     def __start(self):
@@ -58,86 +121,90 @@ class MoodifyLogic:
         count = 0
 
         # Output on the pin for
-        GPIO.setup(self.ldr, GPIO.OUT)
-        GPIO.output(self.ldr, False)
-        time.sleep(self.delayTime)
+        GPIO.setup(self.__ldr, GPIO.OUT)
+        GPIO.output(self.__ldr, False)
+        time.sleep(self.__delayTime)
 
         # Change the pin back to input
-        GPIO.setup(self.ldr, GPIO.IN)
+        GPIO.setup(self.__ldr, GPIO.IN)
 
         # Count until the pin goes high
-        while GPIO.input(self.ldr) == 0:
+        while GPIO.input(self.__ldr) == 0:
             count += 1
 
         return count
 
     def __manualLEDFun(self, selected):
         if selected:
-            self.colourControl.show_colours()
+            self.__colourControl.show_colours()
         else:
-            self.colourControl.turn_off()
+            self.__colourControl.turn_off()
 
     def __autoLDRFun(self):
         value = self.__rc_time()
         print(f"Ldr Value: {value}")
         if value >= 10000:
             print("Lights are ON")
-            self.colourControl.show_colours()
+            self.__colourControl.show_colours()
         if value < 10000:
             print("Lights are OFF")
-            self.colourControl.turn_off()
+            self.__colourControl.turn_off()
 
     def __musicModeFun(self, selected):
         if selected:
-            self.colourControl.turnOnMusic()
+            self.__colourControl.turnOnMusic()
         else:
-            self.colourControl.turnOffMusic()
+            self.__colourControl.turnOffMusic()
 
     def update_mode(self, code):
-        with self._lock:
+        with self.__lock:
             manualLED, autoLDR, musicMode = decodeString(code)
-            self.manualLED = manualLED
-            self.autoLDR = autoLDR
-            self.musicMode = musicMode
+            self.__manualLED = manualLED
+            self.__autoLDR = autoLDR
+            self.__musicMode = musicMode
             print("Values Updated")
 
     def update_colour(self, colour):
-        with self._lock:
+        with self.__lock:
             colourInTuple = decodeColour(colour)
-            self.colourControl.setColour(colourInTuple)
+            self.__colourControl.setColour(colourInTuple)
 
     def update_brightness(self, brightness):
-        with self._lock:
+        with self.__lock:
             newBrightness = decodeBrightness(brightness)
-            self.colourControl.setBrightness(newBrightness)
+            self.__colourControl.setBrightness(newBrightness)
 
     def __mainLoop(self):
         try:
             print("Entering Forever Loop")
             while True:
-                time.sleep(5*self.delayTime)
-                with self._lock:
-                    print(self.manualLED, self.musicMode, self.musicMode)
+                time.sleep(5 * self.__delayTime)
+                with self.__lock:
+                    print(self.__manualLED, self.__musicMode, self.__musicMode)
 
-                    if (self.__e.isSet() and not self.musicMode):
-                        self.__e.clear()
+                    if self.__musicEvent.isSet() and not self.__musicMode:
+                        self.__musicEvent.clear()
                     
-                    if self.manualLED:
+                    if self.__manualLED:
                         print("Manual LED")
-                        self.__manualLEDFun(self.manualLED)
-                    elif self.autoLDR:
+                        self.__manualLEDFun(self.__manualLED)
+                    elif self.__autoLDR:
                         print("Auto LDR")
                         self.__autoLDRFun()
-                    elif self.musicMode:
+                    elif self.__musicMode:
                         print("Music Mode")
-                        self.__musicModeFun(self.musicMode)
-                    elif not (self.manualLED or self.musicMode or self.autoLDR):
+                        self.__musicModeFun(self.__musicMode)
+                    elif not (self.__manualLED or self.__musicMode or self.__autoLDR):
                         print("Everything OFF")
-                        self.__manualLEDFun(self.manualLED)
-                        self.__musicModeFun(self.musicMode)
+                        self.__manualLEDFun(self.__manualLED)
+                        self.__musicModeFun(self.__musicMode)
                     else:
                         pass
         except KeyboardInterrupt:
             pass
         finally:
-            terminate()
+            self.terminate()
+
+    def terminate(self):
+        self.__colourControl.turn_off()
+        GPIO.cleanup()

@@ -14,26 +14,25 @@ def brightnessAdjustedColour(colour, brightness):
 
 class StripControl:
 
-    def __init__(self, e):
+    def __init__(self, musicEvent, brightness=0.2, number_of_pixels=10, order=neopixel.GRB, delay=0.1):
         self.colour = OFF
-        self.brightness = 0.2
+        self.brightness = brightness
 
         self.__brightness_adjusted_colour = OFF
         self.__pixel_pin = board.D18
-        self.__ORDER = neopixel.GRB
-        self.__num_pixels = 10
+        self.__ORDER = order
+        self.__num_pixels = number_of_pixels
         self.__pixels = neopixel.NeoPixel(
             self.__pixel_pin,
             self.__num_pixels,
-            brightness=self.brightness,
             auto_write=False,
             pixel_order=self.__ORDER
         )
 
-        self.__e = e
+        self.__e = musicEvent
 
         self.__refresh_rgb_strip()
-        self.__delay = 0.5
+        self.__delay = delay
         self.__start()
 
         self.turn_off()
