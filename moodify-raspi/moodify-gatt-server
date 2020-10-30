@@ -127,7 +127,7 @@ class ColourCharacteristic(Characteristic):
         :param service: The Service to which it belongs to.
         """
         self.notifying = False
-        self._value = "0,0,0"
+        self._value = "0,0,1"
 
         Characteristic.__init__(
             self, self.COLOUR_CHARACTERISTIC_UUID,

@@ -9,50 +9,11 @@ SEP = ","
 TRUE = "1"
 
 
-class LengthError(Exception):
-    def __init__(self, arg=()):
-        self.args = arg
-
-
-class WrongValueReceived(Exception):
-    def __init__(self, arg=()):
-        self.args = arg
-
-
-class InvalidTypeError(Exception):
-    def __init__(self, arg=()):
-        self.args = arg
-
-
-class TooManyModesSelectedException(Exception):
-    def __init__(self, arg=()):
-        self.args = arg
-
-
 def decodeString(code):
-    """
-    Decodes a string text
-    :param code: the string code.
-    :type code:str
-
-    :return: the boolean values of the mode
-    :rtype: bool, bool, bool
-    """
-    if len(code) != 3:
-        raise LengthError("Not a valid length Mode Code Received")
-    try:
-        for char in code:
-            if int(char) != 0 or int(char) != 1:
-                raise WrongValueReceived("Not a valid Mode Value")
-    except ValueError:
-        raise InvalidTypeError("Can not accept non numeric characters")
-            
+    print(f"Code in function decode:{code}")
     manualLED, autoLDR, musicMode = code[0] == TRUE, code[1] == TRUE, code[2] == TRUE
     print(f"manualLED: {manualLED}, autoLDR: {autoLDR}, musicMode:{musicMode}")
-    if manualLED ^ autoLDR ^ musicMode:
-        return manualLED, autoLDR, musicMode
-    else:
-        raise TooManyModesSelectedException()
+    return manualLED, autoLDR, musicMode
 
 
 def decodeColour(colour):
@@ -81,14 +42,11 @@ def decodeBrightness(brightness):
     :rtype: float
     """
     print(f"Brightness: {brightness}")
-    try :
-        value = float(brightness)
-        if 0 <= value <= 1:
-            return value
-        else:
-            raise WrongValueReceived("Brightness can only be between 0 and 1")
-    except ValueError:
-        raise InvalidTypeError("Can not accept non numeric value")
+    return float(brightness)
+
+
+def terminate():
+    GPIO.cleanup()
 
 
 class MoodifyLogic:
@@ -184,7 +142,7 @@ class MoodifyLogic:
 
                     if self.__musicEvent.isSet() and not self.__musicMode:
                         self.__musicEvent.clear()
-                    
+
                     if self.__manualLED:
                         print("Manual LED")
                         self.__manualLEDFun(self.__manualLED)

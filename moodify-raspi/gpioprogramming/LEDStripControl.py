@@ -1,9 +1,9 @@
 import time
 import math
 import threading
-
 import board
 import neopixel
+from gpioprogramming.SoundAnalyser import SignalAnalyser, wavelength_to_rgb
 
 OFF = (0, 0, 0)
 
@@ -30,9 +30,9 @@ class StripControl:
         )
 
         self.__e = musicEvent
-
         self.__refresh_rgb_strip()
         self.__delay = delay
+        self.__signalAnalyser = SignalAnalyser()
         self.__start()
 
         self.turn_off()
@@ -48,15 +48,15 @@ class StripControl:
     def setColour(self, newColour):
         self.colour = newColour
         print(f"New Colour: {self.colour}")
-        self.__refresh_rgb_strip()
+        self.__refresh_rgb_strip(self.colour, self.brightness)
 
     def setBrightness(self, newBrightness):
         self.brightness = newBrightness
         print(f"New Brightness: {self.brightness}")
-        self.__refresh_rgb_strip()
+        self.__refresh_rgb_strip(self.colour, self.brightness)
 
-    def __refresh_rgb_strip(self):
-        self.__brightness_adjusted_colour = brightnessAdjustedColour(self.colour, self.brightness)
+    def __refresh_rgb_strip(self, colour, brightness):
+        self.__brightness_adjusted_colour = brightnessAdjustedColour(colour, brightness)
         print(f"New Adjusted Colour: {self.__brightness_adjusted_colour}")
         self.__pixels.fill(self.__brightness_adjusted_colour)
 
@@ -75,11 +75,23 @@ class StripControl:
             self.__e.clear()
 
     def __musicLoop(self):
-        while True:
-            self.__e.wait()
-            # TODO: do the boogy
-            # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
-            # Use brightnessAdjustedColour for proper values if needed.
-            print("Playing music on the lights")
-            time.sleep(1)
-            pass
+
+        try:
+            while True:
+                #print("Going to wait!!!")
+                self.__e.wait()
+                #print("Finsihed Waiting!!")
+                # TODO: do the boogy
+                # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
+                # Use brightnessAdjustedColour for proper values if needed.
+                #print("finished waiting. Goto BOOGIE")
+                while self.__e.isSet():
+                    targetFreq, brightness = self.__signalAnalyser.get_next_pair()
+                    print("Frequency:", targetFreq)
+                    print("Brightness:", brightness)
+                    rgb_colour = wavelength_to_rgb(targetFreq)
+                    self.__refresh_rgb_strip(rgb_colour, brightness)
+                    self.show_colours()
+                    time.sleep(0.01)
+        finally:
+            self.__signalAnalyser.terminate()
