@@ -207,5 +207,4 @@ input:checked + .slider.round:before {
     background: #d385d1;
     cursor: pointer;
 }
-
 /* End of CSS for range slider */
