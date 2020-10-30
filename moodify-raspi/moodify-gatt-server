@@ -5,7 +5,8 @@ import dbus
 from pyble.advertisement import Advertisement
 from pyble.service import Application, Service, Characteristic, Descriptor
 
-from gpioprogramming.MoodifyDriver import MoodifyLogic, terminate
+from gpioprogramming.MoodifyDriver \
+    import MoodifyLogic, TooManyModesSelectedException, InvalidTypeError, WrongValueReceived
 
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 NOTIFY_TIMEOUT = 1000
@@ -68,14 +69,14 @@ class ToggleModeCharacteristic(Characteristic):
         :return: void
         """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
-        print('notified')
+        print('notified for mode selct change')
 
     def StartNotify(self):
         """
         Starts the notification process, if not already notifying.
         :return:
         """
-        print('StartNotify')
+        print('StartNotify for Mode Select')
         if self.notifying:
             return
 
@@ -93,8 +94,12 @@ class ToggleModeCharacteristic(Characteristic):
         :return:
         """
         self._value = ''.join([str(v) for v in value])
-        print('New value received for Toggle Mode Char:', self._value)
-        PI_CONTROL.update_mode(self._value)
+        try:
+            PI_CONTROL.update_mode(self._value)
+        except (TooManyModesSelectedException, InvalidTypeError, WrongValueReceived) as e:
+            self._value = str(e)
+        finally:
+            print('New value received for Toggle Mode Char:', self._value)
         if self.notifying:
             self.notify()
 
@@ -103,6 +108,7 @@ class ToggleModeCharacteristic(Characteristic):
         Stops sending notifying to the device.
         :return:
         """
+        print("StopNotify for Mode Select")
         self.notifying = False
 
     def ReadValue(self, options):
@@ -147,14 +153,14 @@ class ColourCharacteristic(Characteristic):
         :return: void
         """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
-        print('notified')
+        print('notified for colour change')
 
     def StartNotify(self):
         """
         Starts the notification process, if not already notifying.
         :return:
         """
-        print('StartNotify')
+        print('StartNotify for colour')
         if self.notifying:
             return
 
@@ -171,11 +177,13 @@ class ColourCharacteristic(Characteristic):
         :param options:
         :return:
         """
-        print('WriteValue')
         self._value = ''.join([str(v) for v in value])
-        print(self._value)
-        PI_CONTROL.update_colour(self._value)
-        print('New value:', self._value)
+        try:
+            PI_CONTROL.update_colour(self._value)
+        except (InvalidTypeError, WrongValueReceived) as e:
+            self._value = str(e)
+        finally:
+            print('New Colour Value:', self._value)
         if self.notifying:
             self.notify()
 
@@ -184,7 +192,7 @@ class ColourCharacteristic(Characteristic):
         Stops sending notifying to the device.
         :return:
         """
-        print('StopNotify')
+        print('StopNotify for colour')
         self.notifying = False
 
     def ReadValue(self, options):
@@ -195,7 +203,7 @@ class ColourCharacteristic(Characteristic):
         """
         print('ReadValue')
         value = self.get_value()
-        print('value to return:', value)
+        print('value to return for colour:', value)
         return value
 
 
@@ -228,14 +236,14 @@ class BrightnessCharacteristic(Characteristic):
         :return: void
         """
         self.PropertiesChanged(GATT_CHRC_IFACE, {"Value": self.get_value()}, [])
-        print('notified')
+        print('notified for brightness change')
 
     def StartNotify(self):
         """
         Starts the notification process, if not already notifying.
         :return:
         """
-        print('StartNotify')
+        print('StartNotify for Brightness')
         if self.notifying:
             return
 
@@ -247,16 +255,19 @@ class BrightnessCharacteristic(Characteristic):
         """
         Updates the current value of the characteristic.
         :param value: The new Value to add
-        :type Byte Array
+        :type value: Byte Array
 
         :param options:
         :return:
         """
-        print('WriteValue')
         self._value = ''.join([str(v) for v in value])
         print(self._value)
-        PI_CONTROL.update_brightness(self._value)
-        print('New value:', self._value)
+        try:
+            PI_CONTROL.update_brightness(self._value)
+        except (InvalidTypeError, WrongValueReceived) as e:
+            self._value = str(e)
+        finally:
+            print('New Brightness Value:', self._value)
         if self.notifying:
             self.notify()
 
@@ -265,7 +276,7 @@ class BrightnessCharacteristic(Characteristic):
         Stops sending notifying to the device.
         :return:
         """
-        print('StopNotify')
+        print('StopNotify for Brightness')
         self.notifying = False
 
     def ReadValue(self, options):
@@ -274,7 +285,7 @@ class BrightnessCharacteristic(Characteristic):
         :param options:
         :return:
         """
-        print('ReadValue')
+        print('ReadValue for Brightness')
         value = self.get_value()
         print('value to return:', value)
         return value
@@ -351,5 +362,5 @@ if __name__ == '__main__':
     try:
         app.run()
     except KeyboardInterrupt:
-        terminate()
+        PI_CONTROL.terminate()
         app.quit()

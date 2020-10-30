@@ -29,8 +29,8 @@ class StripControl:
             pixel_order=self.__ORDER
         )
 
-        self.__e = musicEvent
-        self.__refresh_rgb_strip()
+        self.__musicEvent = musicEvent
+        self.__refresh_rgb_strip(self.colour, self.brightness)
         self.__delay = delay
         self.__signalAnalyser = SignalAnalyser()
         self.__start()
@@ -65,27 +65,21 @@ class StripControl:
         threading.Thread(target=self.__musicLoop, daemon=True).start()
 
     def turnOnMusic(self):
-        if not self.__e.isSet():
+        if not self.__musicEvent.isSet():
             print("Turning on Music")
-            self.__e.set()
+            self.__musicEvent.set()
 
     def turnOffMusic(self):
-        if self.__e.isSet():
+        if self.__musicEvent.isSet():
             print("Turning off the music")
-            self.__e.clear()
+            self.__musicEvent.clear()
 
     def __musicLoop(self):
-
         try:
             while True:
-                #print("Going to wait!!!")
-                self.__e.wait()
-                #print("Finsihed Waiting!!")
+                self.__musicEvent.wait()
                 # TODO: do the boogy
-                # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
-                # Use brightnessAdjustedColour for proper values if needed.
-                #print("finished waiting. Goto BOOGIE")
-                while self.__e.isSet():
+                while self.__musicEvent.isSet():
                     targetFreq, brightness = self.__signalAnalyser.get_next_pair()
                     print("Frequency:", targetFreq)
                     print("Brightness:", brightness)

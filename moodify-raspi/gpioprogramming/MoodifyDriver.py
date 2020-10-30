@@ -9,11 +9,50 @@ SEP = ","
 TRUE = "1"
 
 
+class LengthError(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class WrongValueReceived(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class InvalidTypeError(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
+class TooManyModesSelectedException(Exception):
+    def __init__(self, arg=()):
+        self.args = arg
+
+
 def decodeString(code):
-    print(f"Code in function decode:{code}")
+    """
+    Decodes a string text
+    :param code: the string code.
+    :type code:str
+
+    :return: the boolean values of the mode
+    :rtype: bool, bool, bool
+    """
+    if len(code) != 3:
+        raise LengthError("Not a valid length Mode Code Received")
+    try:
+        for char in code:
+            if int(char) != 0 or int(char) != 1:
+                raise WrongValueReceived("Not a valid Mode Value")
+    except ValueError:
+        raise InvalidTypeError("Can not accept non numeric characters")
+
     manualLED, autoLDR, musicMode = code[0] == TRUE, code[1] == TRUE, code[2] == TRUE
     print(f"manualLED: {manualLED}, autoLDR: {autoLDR}, musicMode:{musicMode}")
-    return manualLED, autoLDR, musicMode
+    if manualLED ^ autoLDR ^ musicMode:
+        return manualLED, autoLDR, musicMode
+    else:
+        raise TooManyModesSelectedException()
 
 
 def decodeColour(colour):
@@ -27,8 +66,8 @@ def decodeColour(colour):
     print(f"New Colour: {colour}")
     try:
         newColor = tuple(int(val) for val in colour.split(sep=SEP))
-        for hex in newColor:
-            if 0 >= hex >= 255:
+        for hexValue in newColor:
+            if 0 >= hexValue >= 255:
                 raise WrongValueReceived("Not a valid color Hex Value")
     except ValueError:
         raise InvalidTypeError("Can not accept non numeric characters")
@@ -42,15 +81,19 @@ def decodeBrightness(brightness):
     :rtype: float
     """
     print(f"Brightness: {brightness}")
-    return float(brightness)
-
-
-def terminate():
-    GPIO.cleanup()
+    try:
+        value = float(brightness)
+        if 0 <= value <= 1:
+            return value
+        else:
+            raise WrongValueReceived("Brightness can only be between 0 and 1")
+    except ValueError:
+        raise InvalidTypeError("Can not accept non numeric value")
 
 
 class MoodifyLogic:
-    def __init__(self, manualLED=False, autoLDR=False, musicMode=False, delayTime=0.1, brightness=0.2, numberOfPixels=10):
+
+    def __init__(self, manualLED=False, autoLDR=False, musicMode=False, delayTime=0.5, brightness=0.2, numberOfPixels=10):
         self.__manualLED = manualLED
         self.__autoLDR = autoLDR
         self.__musicMode = musicMode
@@ -65,8 +108,7 @@ class MoodifyLogic:
 
         self.__musicEvent = threading.Event()
         self.__updateEvent = threading.Event()
-        self.__LDREvent = threading.Event()
-        self.__colourControl = StripControl(self.__musicEvent, self.__LDREvent, self.__numberOfPixels, self.__brightness)
+        self.__colourControl = StripControl(self.__musicEvent, self.__numberOfPixels, self.__brightness)
 
         self.__lock = threading.Lock()
         self.__start()
@@ -120,7 +162,7 @@ class MoodifyLogic:
             self.__manualLED = manualLED
             self.__autoLDR = autoLDR
             self.__musicMode = musicMode
-            print("Values Updated")
+            print("Mode Values Updated")
 
     def update_colour(self, colour):
         with self.__lock:
@@ -136,13 +178,10 @@ class MoodifyLogic:
         try:
             print("Entering Forever Loop")
             while True:
-                time.sleep(5 * self.__delayTime)
+                time.sleep(self.__delayTime)
                 with self.__lock:
-                    print(self.__manualLED, self.__musicMode, self.__musicMode)
-
                     if self.__musicEvent.isSet() and not self.__musicMode:
                         self.__musicEvent.clear()
-
                     if self.__manualLED:
                         print("Manual LED")
                         self.__manualLEDFun(self.__manualLED)
