@@ -11,55 +11,48 @@
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
 </head>
 
-<body style="font-family: 'Comfortaa',sans-serif;color:white;" onload="loadIn()">
+<body onload="loadIn()">
+<div style="font-family: 'Comfortaa',sans-serif;color:white;">
 
-<!-- Side Navigation bar -->
-<div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
+    <!-- Side Navigation bar -->
+    <div id="sidebar" class="w3-sidebar w3-bar-block" style="width:20%;">
 
-    <!-- Elements of Side Nav bar -->
-    <div class="container">
-        <h1 class="title">Moodify&trade;</h1>
-        <p>Welcome to the webinterface of <i>your</i> Moodify&trade;!</p>
-
-        <div>
-            <a class="accordion w3-bar-item w3-button" style="text-align:center;">Characteristics</a>
-
-            <div class="panel">
+        <!-- Elements of Side Nav bar -->
+        <div class="container">
+            <h1 class="title">Moodify&trade;</h1>
+            <p>Welcome to the web interface of <i>your</i> Moodify&trade;!</p>
+            <div class="radio-left">
                 <div>
-                    <input type="radio" id="contactChoice1" onclick="updateChoice()"
-                           name="contact" value="email">
-                    <label for="contactChoice1">Colour</label>
+                    <input type="radio" id="manualLight" onclick="sendModeUpdate(0)"
+                           name="radio" value="manualLight">
+                    <label for="manualLight">Manual Light</label>
                 </div>
                 <div>
-                    <input type="radio" id="contactChoice2" onclick="updateChoice()"
-                           name="contact" value="phone">
-                    <label for="contactChoice2">Brightness</label>
+                    <input type="radio" id="autoLED" onclick="sendModeUpdate(1)"
+                           name="radio" value="autoLED">
+                    <label for="autoLED">Auto LED</label>
                 </div>
                 <div>
-                    <input type="radio" id="contactChoice3" onclick="updateChoice()"
-                           name="contact" value="mail">
-                    <label for="contactChoice3">Music Mode</label>
+                    <input type="radio" id="musicMode" onclick="sendModeUpdate(2)"
+                           name="radio" value="musicMode">
+                    <label for="musicMode">Music Mode</label>
                 </div>
             </div>
+
         </div>
-
-        <a href="#" class="w3-bar-item w3-button" style="text-align: center">Alarm</a>
-    </div>
-
-    <div class="btn_holder">
-        <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
-        <button onclick="getDevice();"  class="btn disconnect_btn" style="color:white">&nbsp;&nbsp;&nbsp;Connect&nbsp;&nbsp;</button>
-        <button onclick="disconnect();"  class="btn disconnect_btn" style="color:white">Disconnect</button>
-
-        <div id="disconModal" class="modal">
-            <div class="modalContent">
-                <span class="close" onclick="closing()">&times;</span>
-                <p style="color:black;">You have been disconnected</p>
-            </div>
+        <div>
+                <label class="switch">
+              <input type="checkbox" onclick="lightOff()" id = "lightSwitch">
+              <span class="slider round"></span>
+            </label>
+        </div>
+        <div class="btn_holder">
+            <!-- For now onclick of Disconnect calls disconnect function in index.js (alert box) -->
+            <button onclick="getDevice();" class="btn disconnect_btn" style="color:white">&nbsp;Connect&nbsp;</button>
+            <button onclick="disconnect();" class="btn disconnect_btn" style="color:white">Disconnect</button>
         </div>
     </div>
 </div>
-
 
 
 <!-- Container for the light and toggle button and other features -->
@@ -67,83 +60,22 @@
     <!-- Glowing light -->
     <div class="container top-section">
         <!--This is the light on the standard page-->
-        <div class="circle flex">
+        
+        <div id="circle" class="circle flex">
             <span id="bulb" class="light"></span>
         </div>
-
-        <!-- Toggle Switch  -->
-        <div class="w3-row">
-            <label>Manual Light</label>
-            <label>Auto LDR</label>
-            <label>Music Mode</label>
-        </div>
-        <div class="w3-row">
-                <label class="switch">
-                    <input type="checkbox" id="ManualLight" onclick="sendModeUpdate(0);">
-                    <span class="slider round"></span>
-                    <div class="text"></div>
-                </label>
-                <label class="switch">
-                    <input type="checkbox" id="LightIntensityMode" onclick="sendModeUpdate(1);">
-                    <span class="slider round"></span>
-                    <div class="text"></div>
-                </label>
-                <label class="switch">
-                    <input type="checkbox" id="MusicMode" onclick="sendModeUpdate(2);">
-                    <span class="slider round"></span>
-                    <div class="text"></div>
-                </label>
-        </div>
-
-        <!-- Color palette -->
-        <span class="custom-control custom-switch">
-            <div id="colours">
-
-
-
-<!--                <button onclick="sendColourUpdate('255,255,255')" class="colourSquare w3-white"></button>-->
-<!--                <button onclick="sendColourUpdate('255,0,0')" class="colourSquare w3-red"></button>-->
-<!--                <button onclick="sendColourUpdate('0,255,0')" class="colourSquare w3-blue"></button>-->
-<!--                <button onclick="sendColourUpdate('0,0,255')" class="colourSquare w3-green"></button>-->
-<!--                <button onclick="sendColourUpdate('0,0,0')" class="colourSquare w3-black"></button>-->
-            </div>
-
+    
+        <div style="width:30%">
+            <div id="colours" ></div>
             <!-- Slider for Intensity -->
-            <div id="slidr" class="slidecontainer">
-                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range">
+            <div id="slidr" class="slidecontainer" style="width:35%">
+                <input id="range_slider" type="range" min="0" max="1" value="1" step="0.01" class="slider range" style="margin-top:150px;">
                 <div id="demo"></div>
                 <!-- This appears behind the slider  <label>Intensity</label> -->
             </div>
-            <div id="musicToggle">
-
-            </div>
-        </span>
+        </div>
+                
     </div>
 </div>
-<footer id="footer">
-    Moodify&trade;, the future we all wish we were living.
-</footer>
 </body>
-
-
-<!--Somehow it doesn't work if I put this in the index.js file-->
-<script type="text/javascript">
-    var acc = document.getElementsByClassName("accordion");
-
-    for (let i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-                /* Toggle between adding and removing the "active" class,
-                to highlight the button that controls the panel */
-                this.classList.toggle("active");
-
-                /* Toggle between hiding and showing the active panel */
-                var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {panel.style.display = "block";}
-            }
-        );
-    }
-
-</script>
 </html>

@@ -3,6 +3,7 @@ html, body{
     background-color: #3E2C50;
     text-align:center;
     font-family: 'Comfortaa', sans-serif;
+    overflow: hidden;
 }
 
 #main{
@@ -10,39 +11,10 @@ html, body{
     padding-bottom: 3rem;
 }
 
-#nestedbar{
-    background-color:#674E7F;
-}
-
 .title{
     font-family: 'Comfortaa', sans-serif;
     font-size:50px;
     color:white;
-}
-/* Basically does nothing for some reason, gonna look into it.
-  .accordion {
-    background-color: #674E7F;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-    transition: 0.4s;
-  }
-   */
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .accordion:hover {
-    background-color: #674E7F;
-}
-
-/* Style the accordion panel. Note: hidden by default */
-.panel {
-    padding: 0 18px;
-
-    display: none;
-    overflow: hidden;
 }
 .circle.flex {
     display: flex;
@@ -55,7 +27,7 @@ html, body{
     z-index: 2;
     height: 400px;
     width: 400px;
-    background-color:black; /*dunno why but I need this*/
+    background-color:rgba(39, 38, 38, 0.342); /*dunno why but I need this*/
     border-radius: 50%;
     box-shadow: 0 0 15px 0 black;
     display: inline-block;
@@ -67,12 +39,7 @@ html, body{
     padding: 14px 28px; /* Add some padding */
     cursor: pointer; /* Add a pointer cursor on mouse-over */
 }
-/*.container{
-  justify-content: space-between;
-  flex-direction: column;
-  height: 100vh;
-  display: flex;
-}*/
+
 .btn_holder{
     position:absolute;
     left: 5%;
@@ -87,14 +54,6 @@ html, body{
     border:0px;
 }
 
-.sidenav > a {
-    font-size:20px;
-    display:block; /*Each its own block/line */
-    margin-top:50px;
-    text-align:center;
-    padding:7px; /*Easier selecting of the modes*/
-    color:white;
-}
 
 
 .w3-bar-item, .w3-button{
@@ -106,10 +65,6 @@ html, body{
     background-color: #674E7F;
 }
 
-#footer {
-    width: 100%;
-    height: 3rem;            /* Footer height */
-}
 
 /* The switch - the box around the slider */
 .switch {
@@ -193,18 +148,19 @@ input:checked + .slider.round:before {
     display:inline-block;
 }
 
-.whiteSquare{background-color:white;}
-.redSquare{background-color:red;}
-.blueSquare{background-color:blue;}
-.greenSquare{background-color:green;}
-.blackSquare{background-color:black;}
+.radio-left{
+    text-align: left;
+    margin-left: 10%;
+}
 
 #colours{
     visibility: hidden;
+    float:left;
 }
 
-#musicToggle{
+#slidr{
     visibility: hidden;
+    float:right;
 }
 
 .slidecontainer {
@@ -214,45 +170,6 @@ input:checked + .slider.round:before {
     position: sticky; /*I need a higher z-index in order to make it appear. This requires a relative/absolute/sticky/... position. This one works*/
     z-index: 10;
     visibility: hidden;
-}
-
-
-
-.modal {
-    display: none; /* Hidden by default */
-    position:fixed; /* Stay in place */
-    z-index: 5; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modalContent {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 /* CSS for Range Slider */
@@ -290,5 +207,4 @@ input:checked + .slider.round:before {
     background: #d385d1;
     cursor: pointer;
 }
-
 /* End of CSS for range slider */
