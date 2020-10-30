@@ -79,15 +79,17 @@ class StripControl:
 
         try:
             while True:
-                print("Going to wait!!!")
+                #print("Going to wait!!!")
                 self.__e.wait()
-                print("Finsihed Waiting!!")
+                #print("Finsihed Waiting!!")
                 # TODO: do the boogy
                 # While in this loop use local colour/brightness declaration not the self.colour, self.brightness
                 # Use brightnessAdjustedColour for proper values if needed.
-                print("finished waiting. Goto BOOGIE")
+                #print("finished waiting. Goto BOOGIE")
                 while self.__e.isSet():
                     targetFreq, brightness = self.__signalAnalyser.get_next_pair()
+                    print("Frequency:", targetFreq)
+                    print("Brightness:", brightness)
                     rgb_colour = wavelength_to_rgb(targetFreq)
                     self.__refresh_rgb_strip(rgb_colour, brightness)
                     self.show_colours()
