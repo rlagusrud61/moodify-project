@@ -47,7 +47,7 @@ class SignalAnalyser:
         self.highcut = 920
         self.fs = 44100
         self.order = 10
-        self.CHUNK = 1 * 4096
+        self.CHUNK = 4096
         self.p = pyaudio.PyAudio()  # start the PyAudio class
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=self.fs, input=True,
                                   frames_per_buffer=self.CHUNK)  # uses default input device
