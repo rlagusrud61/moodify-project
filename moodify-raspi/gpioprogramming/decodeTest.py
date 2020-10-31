@@ -1,5 +1,5 @@
 import unittest
-from MoodifyDriver \
+from Util \
     import TooManyModesSelectedException, InvalidTypeError, WrongValueReceived, LengthError, \
     decodeString, decodeBrightness, decodeColour
 
