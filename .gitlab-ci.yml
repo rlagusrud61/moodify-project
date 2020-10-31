@@ -2,6 +2,17 @@
 # Full project: https://gitlab.com/pages/plain-html
 image: alpine:latest
 
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - apt-get install -y python-dev python-pip
+    - cd ./moodify-raspi/gpioprogramming
+    - python3 decodeTest.py
+
 pages:
   stage: deploy
   script:
@@ -11,4 +22,3 @@ pages:
     - public
   only:
   - master
-

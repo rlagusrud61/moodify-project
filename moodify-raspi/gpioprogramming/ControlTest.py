@@ -1,3 +1,6 @@
+# This test has to be run manually as this is dependant on the existence of the RGB_LED_Strips,
+# and checks if they are working properly.
+
 from LEDStripControl import StripControl
 import threading
 import time

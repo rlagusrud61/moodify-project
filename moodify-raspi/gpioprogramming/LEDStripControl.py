@@ -3,7 +3,7 @@ import math
 import threading
 import board
 import neopixel
-from gpioprogramming.SoundAnalyser import SignalAnalyser, wavelength_to_rgb
+from SoundAnalyser import SignalAnalyser, wavelength_to_rgb
 
 OFF = (0, 0, 0)
 

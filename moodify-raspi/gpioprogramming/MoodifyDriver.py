@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import RPi.GPIO as GPIO
-from gpioprogramming.LEDStripControl import StripControl
+from LEDStripControl import StripControl
 import time
 import threading
 
@@ -10,22 +10,22 @@ TRUE = "1"
 
 
 class LengthError(Exception):
-    def __init__(self, arg=()):
+    def __init__(self, arg=None):
         self.args = arg
 
 
 class WrongValueReceived(Exception):
-    def __init__(self, arg=()):
+    def __init__(self, arg=None):
         self.args = arg
 
 
 class InvalidTypeError(Exception):
-    def __init__(self, arg=()):
+    def __init__(self, arg=None):
         self.args = arg
 
 
 class TooManyModesSelectedException(Exception):
-    def __init__(self, arg=()):
+    def __init__(self, arg=None):
         self.args = arg
 
 
@@ -39,20 +39,21 @@ def decodeString(code):
     :rtype: bool, bool, bool
     """
     if len(code) != 3:
-        raise LengthError("Not a valid length Mode Code Received")
+        raise LengthError(("Not a valid length Mode Code Received"))
     try:
         for char in code:
-            if int(char) != 0 or int(char) != 1:
-                raise WrongValueReceived("Not a valid Mode Value")
+            if int(char) != 0 and int(char) != 1:
+                raise WrongValueReceived(("Not a valid Mode Value"))
     except ValueError:
         raise InvalidTypeError("Can not accept non numeric characters")
 
     manualLED, autoLDR, musicMode = code[0] == TRUE, code[1] == TRUE, code[2] == TRUE
-    print(f"manualLED: {manualLED}, autoLDR: {autoLDR}, musicMode:{musicMode}")
-    if manualLED ^ autoLDR ^ musicMode:
+    modesSelected = manualLED + autoLDR + musicMode
+    if modesSelected == 0 or modesSelected == 1:
+        print(f"manualLED: {manualLED}, autoLDR: {autoLDR}, musicMode:{musicMode}")
         return manualLED, autoLDR, musicMode
     else:
-        raise TooManyModesSelectedException()
+        raise TooManyModesSelectedException(("Too many modes are selected can not turn them all on"))
 
 
 def decodeColour(colour):
@@ -63,12 +64,16 @@ def decodeColour(colour):
     :return: : Decoded tuple
     :rtype: tuple()
     """
-    print(f"New Colour: {colour}")
     try:
-        newColor = tuple(int(val) for val in colour.split(sep=SEP))
+        vals = colour.split(sep=SEP)
+        if len(vals) != 3:
+            raise LengthError("HEX String should only have 3 hexadecimal colours!")
+        newColor = tuple(int(val) for val in vals)
         for hexValue in newColor:
-            if 0 >= hexValue >= 255:
+            if 0 > hexValue or hexValue > 255:
                 raise WrongValueReceived("Not a valid color Hex Value")
+        print(f"New Colour: {colour}")
+        return newColor
     except ValueError:
         raise InvalidTypeError("Can not accept non numeric characters")
 
@@ -80,10 +85,10 @@ def decodeBrightness(brightness):
     :return: :the float value of the brightness
     :rtype: float
     """
-    print(f"Brightness: {brightness}")
     try:
         value = float(brightness)
         if 0 <= value <= 1:
+            print(f"Brightness: {brightness}")
             return value
         else:
             raise WrongValueReceived("Brightness can only be between 0 and 1")
