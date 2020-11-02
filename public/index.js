@@ -147,13 +147,20 @@ function disconnect(){
     alert("You are now disconnected.");
 }
 
+/**
+ * This function checks if the browser is compatible with the Web Bluetooth API. 
+ * It searches for the browser, the version of the browser and the operating system of the device. 
+ * It then checks whether the browser is compatible, or if this version of the browser is compatible on the OS of the device. 
+ * If it if not compatible, the user gets an alert box that shows whether they should use another browser, or if they should update/downgrade they browser. 
+ */
 function compatibilityCtr(){
-    var nAgt = navigator.userAgent;
-    var browserName  = navigator.appName;
-    var fullV  = ''+parseFloat(navigator.appVersion);
-    var majorV = parseInt(navigator.appVersion,10);
-    var navUsAg = window.navigator.userAgent;
+    var nAgt = navigator.userAgent;  // This contains information about the browser
+    var browserName  = navigator.appName;  // This contains the browser name
+    var fullV  = ''+parseFloat(navigator.appVersion);  // This contains the full version of the browser
+    var majorV = parseInt(navigator.appVersion,10);  // This contains the major version of the browser
+    var navUsAg = window.navigator.userAgent;  // This contains the Operating System of the device
 
+    // navUsAg contains the name of the OS, so it searches for the true OS
     var OSName = "Unknown";
     if (navUsAg.indexOf("Windows NT 10.0")!= -1) {OSName="Windows 10";}
     else if (navUsAg.indexOf("Windows NT 6.2") != -1) {OSName="Windows 8";}
@@ -164,7 +171,6 @@ function compatibilityCtr(){
     else if (navUsAg.indexOf("Mac")            != -1) OSName="Mac/iOS";
     else if (navUsAg.indexOf("X11")            != -1) OSName="UNIX";
     else if (navUsAg.indexOf("Linux")          != -1) OSName="Linux";
-
 
     // In Opera, the true version is after "Opera" or after "Version"
     if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
@@ -209,6 +215,7 @@ function compatibilityCtr(){
     majorV = parseInt(navigator.appVersion,10);
     }
 
+    // Checks for compatibility and makes the alert box
     if(browserName == "Firefox"){
         alert("The web interface for Moodify does not support this browser.");
     } else if(browserName == "Safari"){
