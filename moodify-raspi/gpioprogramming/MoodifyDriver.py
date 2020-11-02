@@ -18,7 +18,7 @@ class MoodifyLogic:
 
         self.__delayTime = delayTime
         self.__value = 0  # this variable will be used to store the ldr value
-        self.__ldr = 7  # ldr is connected with pin number 7
+        self.__ldr = 17  # ldr is connected with pin number 7
         self.__led = 11  # led is connected with pin number 11
 
         self.__brightness = brightness
