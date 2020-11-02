@@ -11,13 +11,11 @@ def getOctaveRGB(observedFreq, lowcut, highcut, scaledBrightness):
     if observedFreq < lowcut:
         rgb = [0, 0, 0]
     elif observedFreq < increment + lowcut:
-        rgb = [0, 0, scaledBrightness*(observedFreq/(increment + lowcut))*255/3]
+        rgb = [0, 0, scaledBrightness*(observedFreq/(increment + lowcut))*255]
     elif observedFreq < 2*increment + lowcut:
-        rgb = [0, scaledBrightness*(observedFreq/((2 * increment) + lowcut))*255/3, 0]
+        rgb = [0, scaledBrightness*(observedFreq/((2 * increment) + lowcut))*255, 0]
     elif observedFreq < 3*increment + lowcut:
-        rgb = [scaledBrightness*(observedFreq/((3 * increment) + lowcut))*255/3, 0, 0]
-    elif observedFreq > highcut:
-        rgb = [255/3, 0, 0]
+        rgb = [scaledBrightness*(observedFreq/((3 * increment) + lowcut))*255, 0, 0]
     else:
         rgb = [0, 0, 0]
     # print(f"RGB: {rgb}")
