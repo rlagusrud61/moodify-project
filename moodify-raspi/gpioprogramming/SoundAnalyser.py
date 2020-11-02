@@ -1,25 +1,37 @@
 import pyaudio
 from scipy import signal
 import numpy as np
+from colr import color
 
 
-def getHex(observedFreq, lowcut, highcut):
-    freq = observedFreq
-    if observedFreq > highcut:
-        freq = highcut
-    elif observedFreq < lowcut:
-        freq = lowcut
-    return min(max(255 * (freq - lowcut) / (highcut - lowcut), 10), 255)
+def getOctaveRGB(observedFreq, lowcut, highcut, scaledBrightness):
+    increment = (highcut - lowcut)/3
+    # print(f"{lowcut}<={observedFreq}<={highcut}: increment:{increment}: first:{increment+lowcut}, second:{2*increment + lowcut}")
+    # print(f"scaledBrightness: {scaledBrightness}")
+    if observedFreq < lowcut:
+        rgb = [0, 0, 0]
+    elif observedFreq < increment + lowcut:
+        rgb = [0, 0, scaledBrightness*(observedFreq/(increment + lowcut))*255/3]
+    elif observedFreq < 2*increment + lowcut:
+        rgb = [0, scaledBrightness*(observedFreq/((2 * increment) + lowcut))*255/3, 0]
+    elif observedFreq < 3*increment + lowcut:
+        rgb = [scaledBrightness*(observedFreq/((3 * increment) + lowcut))*255/3, 0, 0]
+    elif observedFreq > highcut:
+        rgb = [255/3, 0, 0]
+    else:
+        rgb = [0, 0, 0]
+    # print(f"RGB: {rgb}")
+    return rgb
 
 
 class SignalAnalyser:
 
     def __init__(self):
         self.names = ["red", "green", "blue"]
-        self.low_cuts = [130, 260, 520]
-        self.high_cuts = [260, 520, 1040]
-        self.amplitudeThreshold = 300
-        self.amplitudeScaleFactor = 5000
+        self.low_cuts = [110, 240, 500]
+        self.high_cuts = [280, 540, 1240]
+        self.amplitudeThreshold = 150
+        self.amplitudeScaleFactor = 500
         self.fs = 44100
         self.nf = 44100 / 2
         self.order = 4
@@ -61,13 +73,12 @@ class SignalAnalyser:
         return freqPeak, peak
 
     def getRGB(self, freq_data):
-        RGB = []
+        octaveRGBs = []
         for name, low, high in zip(self.names, self.low_cuts, self.high_cuts):
-            print(name, freq_data[name]['freqAmplitude'])
-            hexValue = round(getHex(freq_data[name]['freqPeak'], low, high))
-            brightnessScaledHex = round(hexValue * freq_data[name]['freqAmplitude'])
-            RGB.append(brightnessScaledHex)
-        return tuple(RGB)
+            octaveRGB = getOctaveRGB(freq_data[name]['freqPeak'], low, high, freq_data[name]['freqAmplitude'])
+            octaveRGBs.append(octaveRGB)
+            # print(name, octaveRGB, freq_data[name]['freqAmplitude'])
+        return tuple([min(round(sum(x)), 255) for x in zip(octaveRGBs[0], octaveRGBs[1], octaveRGBs[2])])
 
     def get_next(self):
         self.stream.start_stream()
@@ -75,14 +86,14 @@ class SignalAnalyser:
         self.stream.stop_stream()
 
         rgb_metadata, base_amplitude = self.analyse_data(data)
-        print(rgb_metadata)
+        # print(rgb_metadata)
         for component in rgb_metadata.keys():
             if rgb_metadata[component]['freqAmplitude'] > self.amplitudeThreshold:
                 adjustedAMP = max(min(rgb_metadata[component]['freqAmplitude'] / self.amplitudeScaleFactor, 1.0), 0.1)
             else:
                 adjustedAMP = 0
             rgb_metadata[component]['freqAmplitude'] = adjustedAMP
-        print(rgb_metadata)
+        # print(rgb_metadata)
         return rgb_metadata
 
     def terminate(self):
@@ -95,4 +106,4 @@ if __name__ == '__main__':
     while True:
         colour_metadata = newAnalysis.get_next()
         rgb = newAnalysis.getRGB(colour_metadata)
-        print(rgb)
+        print(color(f"FINAL: {rgb}", fore=(255, 255, 255), back=rgb))
