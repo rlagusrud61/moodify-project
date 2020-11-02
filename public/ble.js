@@ -8,6 +8,9 @@ var filters = [],
     uint8array = new TextEncoder(),
     string = new TextDecoder();
 
+/**
+    This method is used to get the Raspberry Pi, which is the Bluetooth device.
+*/
 async function getDevice() {
     let services = [myServiceUUID];
     if (services) {
@@ -37,6 +40,10 @@ async function getDevice() {
         console.log('Argh! ' + error);
     }
 }
+
+/**
+    This method gets the BLE GATT server hosted on the Raspberry Pi.
+*/
 async function getServer() {
     try {
         if (myDevice === undefined) {
@@ -47,6 +54,10 @@ async function getServer() {
         console.log('Argh! ' + error)
     }
 }
+
+/**
+    This  method gets the Moodify Service that is provided by the BLE GATT server.
+*/
 async function getService() {
     try {
         if (myServer === undefined) {
@@ -57,6 +68,10 @@ async function getService() {
         console.log('Argh! ' + error)
     }
 }
+
+/**
+    This method gets all the Characteristics of the Moodify service.
+*/
 async function getChars() {
     try {
         if (myService === undefined) {
@@ -67,6 +82,10 @@ async function getChars() {
         console.log('Argh! ' + error)
     }
 }
+
+/**
+    This method gets a specific Characteristic of the Moodify service.
+*/
 async function getChar() {
     try {
         if (myChars === undefined) {
@@ -87,6 +106,9 @@ async function getChar() {
     }
 }
 
+/**
+    This method is used to connect the web interface to the Raspberry Pi via Bluetooth.
+*/
 async function establishConnection() {
     if (myDevice === undefined) {
         await getDevice()
@@ -102,17 +124,25 @@ async function establishConnection() {
     console.log(modeCharacteristic)
 }
 
-// subscribe to changes from the meter:
+/**
+    This method is used to send changes made in the Raspberry Pi to the web interface via Bluetooth.
+*/
 function subscribeToChanges(characteristic) {
     characteristic.oncharacteristicvaluechanged = handleData;
 }
 
+/**
+    This method converts the data received from the Raspberry Pi to a human-readable format.
+*/
 function handleData(event) {
     // get the data buffer from the meter:
     const buf = new Uint8Array(event.target.value);
     console.log(string.decode(buf));
 }
 
+/**
+    This method is no longer used.
+*/
 async function getCurrentValue() {
     try {
         if (modeCharacteristic === undefined) {
@@ -126,6 +156,9 @@ async function getCurrentValue() {
     }
 }
 
+/**
+    This method writes the new mode to the mode characteristic and sends it to the Raspberry Pi.
+*/
 async function writeVal(newFlag) {
     if (modeCharacteristic === undefined) {
         await getChar();
@@ -140,6 +173,10 @@ async function writeVal(newFlag) {
         console.log('Argh! ' + error)
     }
 }
+
+/**
+    This method writes the new colour to the colour characteristic and sends it to the Raspberry Pi.
+*/
 async function writeColour(colour) {
     if (colourCharacteristic === undefined) {
         await getChar();
@@ -154,6 +191,11 @@ async function writeColour(colour) {
     }
     console.log({colour})
 }
+
+/**
+    This method writes the brightness as detected by the slider to the brightness characteristic
+    and sends it to the Raspberry Pi.
+*/
 async function writeBrightness(brightness) {
     if (brightnessCharacteristic === undefined) {
         await getChar();
@@ -169,6 +211,9 @@ async function writeBrightness(brightness) {
     console.log({ brightness })
 }
 
+/**
+    This method is used to disconnect the web interface from the Raspberry Pi.
+*/
 function bleDisconnect() {
     if (myDevice) {
         myDevice.gatt.disconnect();
