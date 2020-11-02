@@ -80,7 +80,7 @@ class StripControl:
                 self.__musicEvent.wait()
                 # TODO: do the boogy
                 while self.__musicEvent.isSet():
-                    targetFreq, brightness = self.__signalAnalyser.get_next_pair()
+                    targetFreq, brightness = self.__signalAnalyser.get_next()
                     print("Frequency:", targetFreq)
                     print("Brightness:", brightness)
                     rgb_colour = wavelength_to_rgb(targetFreq)
