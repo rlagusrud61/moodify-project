@@ -11,13 +11,13 @@ def getOctaveRGB(observedFreq, lowcut, highcut, scaledBrightness):
         observedFreq = lowcut
     elif observedFreq > highcut:
         observedFreq = highcut
-    return de_normalize(colorsys.hsv_to_rgb((observedFreq - lowcut) / (highcut - lowcut), 1.0, scaledBrightness))
+    return de_normalize(colorsys.hsv_to_rgb((240/360)*(1 - (observedFreq - lowcut) / (highcut - lowcut)), 1/3, scaledBrightness), 0.75)
 
 
-def de_normalize(tuple_rgb):
+def de_normalize(tuple_rgb, factor):
     colours = []
     for hex in tuple_rgb:
-        hex = int(hex * 255)
+        hex = int(hex * 255 * factor)
         colours.append(hex)
     return colours
 
