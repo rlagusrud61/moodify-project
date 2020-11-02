@@ -2,24 +2,24 @@ import pyaudio
 from scipy import signal
 import numpy as np
 from colr import color
+import time
+import colorsys
 
 
 def getOctaveRGB(observedFreq, lowcut, highcut, scaledBrightness):
-    increment = (highcut - lowcut)/3
-    # print(f"{lowcut}<={observedFreq}<={highcut}: increment:{increment}: first:{increment+lowcut}, second:{2*increment + lowcut}")
-    # print(f"scaledBrightness: {scaledBrightness}")
     if observedFreq < lowcut:
-        rgb = [0, 0, 0]
-    elif observedFreq < increment + lowcut:
-        rgb = [0, 0, scaledBrightness*(observedFreq/(increment + lowcut))*255]
-    elif observedFreq < 2*increment + lowcut:
-        rgb = [0, scaledBrightness*(observedFreq/((2 * increment) + lowcut))*255, 0]
-    elif observedFreq < 3*increment + lowcut:
-        rgb = [scaledBrightness*(observedFreq/((3 * increment) + lowcut))*255, 0, 0]
-    else:
-        rgb = [0, 0, 0]
-    # print(f"RGB: {rgb}")
-    return rgb
+        observedFreq = lowcut
+    elif observedFreq > highcut:
+        observedFreq = highcut
+    return de_normalize(colorsys.hsv_to_rgb((observedFreq - lowcut) / (highcut - lowcut), 1.0, scaledBrightness))
+
+
+def de_normalize(tuple_rgb):
+    colours = []
+    for hex in tuple_rgb:
+        hex = int(hex * 255)
+        colours.append(hex)
+    return colours
 
 
 class SignalAnalyser:
@@ -28,8 +28,8 @@ class SignalAnalyser:
         self.names = ["red", "green", "blue"]
         self.low_cuts = [110, 240, 500]
         self.high_cuts = [280, 540, 1240]
-        self.amplitudeThreshold = 150
-        self.amplitudeScaleFactor = 500
+        self.amplitudeThreshold = 100
+        self.amplitudeScaleFactor = 600
         self.fs = 44100
         self.nf = 44100 / 2
         self.order = 4
@@ -75,7 +75,7 @@ class SignalAnalyser:
         for name, low, high in zip(self.names, self.low_cuts, self.high_cuts):
             octaveRGB = getOctaveRGB(freq_data[name]['freqPeak'], low, high, freq_data[name]['freqAmplitude'])
             octaveRGBs.append(octaveRGB)
-            # print(name, octaveRGB, freq_data[name]['freqAmplitude'])
+            # print(name, octaveRGB, freq_data[name]['freqAmplitude'], freq_data[name]['freqPeak'])
         return tuple([min(round(sum(x)), 255) for x in zip(octaveRGBs[0], octaveRGBs[1], octaveRGBs[2])])
 
     def get_next(self):
@@ -104,4 +104,5 @@ if __name__ == '__main__':
     while True:
         colour_metadata = newAnalysis.get_next()
         rgb = newAnalysis.getRGB(colour_metadata)
-        print(color(f"FINAL: {rgb}", fore=(255, 255, 255), back=rgb))
+        print(color(f"LET IT GO!!!", back=rgb))
+        time.sleep(0.2)
