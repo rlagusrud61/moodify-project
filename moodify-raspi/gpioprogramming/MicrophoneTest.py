@@ -1,3 +1,5 @@
+# This test has to be done manually as this test checks for connected audio devices.
+
 import pyaudio
 import sounddevice
 

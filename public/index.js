@@ -8,6 +8,10 @@ let musicMode = document.getElementById("musicMode");
 
 let currentMode= "000";
 
+/**
+ This method is called whenever index.html is loaded. A colour picker is created. All the switches and
+ radio buttons are disabled, as the web interface is not connected to the Pi yet.
+*/
 function loadIn(){
     compatibilityCtr();
     colours = document.getElementById("colours");
@@ -58,6 +62,10 @@ function loadIn(){
     document.getElementById("lightSwitch").disabled = true;
 }
 
+/**
+    This method is used by the switch in the sidebar to turn on and off the lights when the web interface
+    is connected to the Pi via Bluetooth.
+*/
 async function lightOff(){
     if (!document.getElementById("lightSwitch").checked){
         await writeVal("000"); // turns manual LED on and
@@ -66,6 +74,10 @@ async function lightOff(){
     }
 }
 
+/**
+    This method is used to enable the switches and radio buttons once the web interface is connected to the
+    Pi via Bluetooth.
+*/
 function enableRadioButtons(){
     document.getElementById("manualLight").disabled = false;
     document.getElementById("autoLED").disabled = false;
@@ -74,6 +86,10 @@ function enableRadioButtons(){
     document.getElementById("lightSwitch").checked = true;
 }
 
+/**
+    This method is used to display the slider, colour picker and light bulb to correspond to one of the three
+    modes which was chosen.
+*/
 function updateChoice(){
     colours.style.visibility="hidden";
     slidr.style.visibility="hidden";
@@ -84,6 +100,10 @@ function updateChoice(){
     if (document.getElementById("musicMode").checked){bulb.innerHTML = "<img src='https://imgur.com/kgXlCfr.gif' alt='Disco woo' style='width=150'/>"}
 }
 
+/**
+    It detects the colour change from the colour picker, alters the colour of the light bulb and then sends
+    this update to the Raspberry Pi via Bluetooth.
+*/
 function onColorChange(color) {
     ({r, g, b} = color.rgb);
     let stringCode = `${r},${g},${b}`;
@@ -93,7 +113,10 @@ function onColorChange(color) {
     sendColourUpdate(stringCode);
 }
 
-// Debugger function for Master Puru <3
+/**
+    It detects the mode change from the radio buttons, displays the corresponding changes in the web
+    interface and then sends this update to the Raspberry Pi via Bluetooth.
+*/
 function sendModeUpdate(flag) {
     let text;
     updateChoice();
@@ -118,12 +141,19 @@ function sendModeUpdate(flag) {
     writeVal(text)
 }
 
+/**
+    This method is used to send the colour change on the colour picker to the Raspberry Pi via Bluetooth.
+*/
 function sendColourUpdate(colourString) {
     // the format of the colour should be int,int,int,
     // so each color value separated by a comma and nothing else, no floats
     writeColour(colourString)
 }
 
+/**
+    This method detects the changes in the slider which correspond to the brightness of the light and sends
+    this signal to the Raspberry Pi via Bluetooth.
+*/
 let brightnessListener = function() {
     rangeValue.current = rangeSlider.value;
     if (rangeValue.current !== rangeValue.last) {
@@ -132,6 +162,11 @@ let brightnessListener = function() {
     }
 };
 
+/**
+    This method is called when the user clicks on the Disconnect button on the sidebar. This method disables all
+    the switches and radio buttons and hides the slider and colour picker. It also displays an alert message
+    to the user to indicate that the web interface is no longer connected to the Raspberry Pi via Bluetooth.
+*/
 function disconnect(){
     bleDisconnect()
     document.getElementById("manualLight").disabled = true;
@@ -147,13 +182,20 @@ function disconnect(){
     alert("You are now disconnected.");
 }
 
+/**
+ * This function checks if the browser is compatible with the Web Bluetooth API. 
+ * It searches for the browser, the version of the browser and the operating system of the device. 
+ * It then checks whether the browser is compatible, or if this version of the browser is compatible on the OS of the device. 
+ * If it if not compatible, the user gets an alert box that shows whether they should use another browser, or if they should update/downgrade they browser. 
+ */
 function compatibilityCtr(){
-    var nAgt = navigator.userAgent;
-    var browserName  = navigator.appName;
-    var fullV  = ''+parseFloat(navigator.appVersion);
-    var majorV = parseInt(navigator.appVersion,10);
-    var navUsAg = window.navigator.userAgent;
+    var nAgt = navigator.userAgent;  // This contains information about the browser
+    var browserName  = navigator.appName;  // This contains the browser name
+    var fullV  = ''+parseFloat(navigator.appVersion);  // This contains the full version of the browser
+    var majorV = parseInt(navigator.appVersion,10);  // This contains the major version of the browser
+    var navUsAg = window.navigator.userAgent;  // This contains the Operating System of the device
 
+    // navUsAg contains the name of the OS, so it searches for the true OS
     var OSName = "Unknown";
     if (navUsAg.indexOf("Windows NT 10.0")!= -1) {OSName="Windows 10";}
     else if (navUsAg.indexOf("Windows NT 6.2") != -1) {OSName="Windows 8";}
@@ -164,7 +206,6 @@ function compatibilityCtr(){
     else if (navUsAg.indexOf("Mac")            != -1) OSName="Mac/iOS";
     else if (navUsAg.indexOf("X11")            != -1) OSName="UNIX";
     else if (navUsAg.indexOf("Linux")          != -1) OSName="Linux";
-
 
     // In Opera, the true version is after "Opera" or after "Version"
     if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
@@ -209,6 +250,7 @@ function compatibilityCtr(){
     majorV = parseInt(navigator.appVersion,10);
     }
 
+    // Checks for compatibility and makes the alert box
     if(browserName == "Firefox"){
         alert("The web interface for Moodify does not support this browser.");
     } else if(browserName == "Safari"){
