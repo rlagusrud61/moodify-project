@@ -38,12 +38,13 @@ class StripControl:
         self.turn_off()
 
     def show_colours(self):
+        self.__pixels.fill(self.__brightness_adjusted_colour)
         self.__pixels.show()
         time.sleep(self.__delay)
 
     def turn_off(self):
         self.__pixels.fill(OFF)
-        self.show_colours()
+        self.__pixels.show()
 
     def setColour(self, newColour):
         self.colour = newColour
