@@ -79,8 +79,8 @@ function updateChoice(){
     slidr.style.visibility="hidden";
 
     let bulb = document.getElementById("bulb");
-    if(document.getElementById("manualLight").checked){colours.style.visibility="visible"; slidr.style.visibility="visible"; colours.style.left=null; colours.style.position=null;}
-    if(document.getElementById("autoLED").checked){colours.style.visibility="visible";colours.style.left="150px"; colours.style.position="relative";}
+    if(document.getElementById("manualLight").checked){colours.style.visibility="visible"; slidr.style.visibility="visible"; colours.style.left=null; colours.style.position=null; bulb.innerHTML="";}
+    if(document.getElementById("autoLED").checked){colours.style.visibility="visible";colours.style.left="150px"; colours.style.position="relative"; bulb.innerHTML="";}
     if (document.getElementById("musicMode").checked){bulb.innerHTML = "<img src='https://imgur.com/kgXlCfr.gif' alt='Disco woo' style='width=150'/>"}
 }
 
